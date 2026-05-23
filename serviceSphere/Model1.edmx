@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="admintab">
+          <Key>
+            <PropertyRef Name="admin_id" />
+          </Key>
+          <Property Name="admin_id" Type="int" Nullable="false" />
+          <Property Name="admin_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="admin_email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="admin_phone" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="logintab">
+          <Key>
+            <PropertyRef Name="login_id" />
+          </Key>
+          <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reg_id" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="log_type" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="providertab">
+          <Key>
+            <PropertyRef Name="provider_id" />
+          </Key>
+          <Property Name="provider_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reg_id" Type="int" />
+          <Property Name="bussiness_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone" Type="bigint" Nullable="false" />
+          <Property Name="is_approved" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usertab">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="user_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone" Type="bigint" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="photo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Function Name="sp_adminregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="adminid" Type="int" Mode="In" />
+          <Parameter Name="adminname" Type="varchar" Mode="In" />
+          <Parameter Name="adminemail" Type="varchar" Mode="In" />
+          <Parameter Name="phone" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="sp_logid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_logincountid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_logininsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="regid" Type="int" Mode="In" />
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+          <Parameter Name="usertype" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_logintype" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_maxidlogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_providersregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="providerregid" Type="int" Mode="In" />
+          <Parameter Name="bussinessname" Type="varchar" Mode="In" />
+          <Parameter Name="address" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="phone" Type="bigint" Mode="In" />
+          <Parameter Name="isapproved" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_userregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="photo" Type="varchar" Mode="In" />
+          <Parameter Name="address" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="servicesphereModelStoreContainer">
+          <EntitySet Name="admintab" EntityType="Self.admintab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logintab" EntityType="Self.logintab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="providertab" EntityType="Self.providertab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usertab" EntityType="Self.usertab" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="servicesphereModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="admintab">
+          <Key>
+            <PropertyRef Name="admin_id" />
+          </Key>
+          <Property Name="admin_id" Type="Int32" Nullable="false" />
+          <Property Name="admin_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="admin_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="admin_phone" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="logintab">
+          <Key>
+            <PropertyRef Name="login_id" />
+          </Key>
+          <Property Name="login_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reg_id" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="log_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="providertab">
+          <Key>
+            <PropertyRef Name="provider_id" />
+          </Key>
+          <Property Name="provider_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reg_id" Type="Int32" />
+          <Property Name="bussiness_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="Int64" Nullable="false" />
+          <Property Name="is_approved" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usertab">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="Int64" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="photo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="servicesphereEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admintabs" EntityType="Self.admintab" />
+          <EntitySet Name="logintabs" EntityType="Self.logintab" />
+          <EntitySet Name="providertabs" EntityType="Self.providertab" />
+          <EntitySet Name="usertabs" EntityType="Self.usertab" />
+          <FunctionImport Name="sp_adminregister">
+            <Parameter Name="adminid" Mode="In" Type="Int32" />
+            <Parameter Name="adminname" Mode="In" Type="String" />
+            <Parameter Name="adminemail" Mode="In" Type="String" />
+            <Parameter Name="phone" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="sp_logid" ReturnType="Collection(Int32)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_logincountid" ReturnType="Collection(Int32)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_logininsert">
+            <Parameter Name="regid" Mode="In" Type="Int32" />
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="usertype" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_logintype" ReturnType="Collection(String)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_maxidlogin" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="sp_providersregister">
+            <Parameter Name="providerregid" Mode="In" Type="Int32" />
+            <Parameter Name="bussinessname" Mode="In" Type="String" />
+            <Parameter Name="address" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="phone" Mode="In" Type="Int64" />
+            <Parameter Name="isapproved" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_userregister">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="photo" Mode="In" Type="String" />
+            <Parameter Name="address" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="status" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="servicesphereModelStoreContainer" CdmEntityContainer="servicesphereEntities">
+          <EntitySetMapping Name="admintabs">
+            <EntityTypeMapping TypeName="servicesphereModel.admintab">
+              <MappingFragment StoreEntitySet="admintab">
+                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+                <ScalarProperty Name="admin_name" ColumnName="admin_name" />
+                <ScalarProperty Name="admin_email" ColumnName="admin_email" />
+                <ScalarProperty Name="admin_phone" ColumnName="admin_phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logintabs">
+            <EntityTypeMapping TypeName="servicesphereModel.logintab">
+              <MappingFragment StoreEntitySet="logintab">
+                <ScalarProperty Name="login_id" ColumnName="login_id" />
+                <ScalarProperty Name="reg_id" ColumnName="reg_id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="log_type" ColumnName="log_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="providertabs">
+            <EntityTypeMapping TypeName="servicesphereModel.providertab">
+              <MappingFragment StoreEntitySet="providertab">
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="reg_id" ColumnName="reg_id" />
+                <ScalarProperty Name="bussiness_name" ColumnName="bussiness_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usertabs">
+            <EntityTypeMapping TypeName="servicesphereModel.usertab">
+              <MappingFragment StoreEntitySet="usertab">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_adminregister" FunctionName="servicesphereModel.Store.sp_adminregister" />
+          <FunctionImportMapping FunctionImportName="sp_logid" FunctionName="servicesphereModel.Store.sp_logid" />
+          <FunctionImportMapping FunctionImportName="sp_logincountid" FunctionName="servicesphereModel.Store.sp_logincountid" />
+          <FunctionImportMapping FunctionImportName="sp_logininsert" FunctionName="servicesphereModel.Store.sp_logininsert" />
+          <FunctionImportMapping FunctionImportName="sp_logintype" FunctionName="servicesphereModel.Store.sp_logintype" />
+          <FunctionImportMapping FunctionImportName="sp_maxidlogin" FunctionName="servicesphereModel.Store.sp_maxidlogin" />
+          <FunctionImportMapping FunctionImportName="sp_providersregister" FunctionName="servicesphereModel.Store.sp_providersregister" />
+          <FunctionImportMapping FunctionImportName="sp_userregister" FunctionName="servicesphereModel.Store.sp_userregister" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

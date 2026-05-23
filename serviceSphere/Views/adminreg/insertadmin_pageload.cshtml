@@ -1,0 +1,70 @@
+﻿@model serviceSphere.Models.admininsert
+@{
+    ViewBag.Title = "insertadmin_pageload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Admin registration</h2>
+<div>
+    @using (Html.BeginForm("insertadmin_click", "adminreg", FormMethod.Post))
+    {
+        <div>
+            <label>Name:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.name)
+            @Html.ValidationMessageFor(m => m.name)
+        </div>
+
+        <div>
+            <label>email:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.email)
+            @Html.ValidationMessageFor(m => m.email)
+        </div>
+
+
+        <div>
+            <label>phone:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.phone)
+            @Html.ValidationMessageFor(m => m.phone)
+        </div>
+
+
+        <div>
+            <label>username:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.username)
+            @Html.ValidationMessageFor(m => m.username)
+        </div>
+
+
+
+        <div>
+            <label>password:</label>
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.pass)
+        </div>
+
+
+        <div>
+            <label>confirm password:</label>
+        </div>
+        <div>
+            @Html.PasswordFor(m=>m.cpassword)
+            @Html.ValidationMessageFor(m=>m.cpassword)
+        </div>
+
+        <div>
+            <input type="submit" value="insert"/>
+            @Html.DisplayFor(m=>m.adminmsg)
+        </div>
+
+    }
+</div>
+

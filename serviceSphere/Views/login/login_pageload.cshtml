@@ -1,0 +1,36 @@
+﻿@model serviceSphere.Models.login
+@{
+    ViewBag.Title = "login_pageload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Login</h2>
+
+<div>
+    @using (Html.BeginForm("login_click", "login", FormMethod.Get))
+    {
+
+        <div>
+            <label>username:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.username)
+            @Html.ValidationMessageFor(m => m.username)
+        </div>
+
+        <div>
+            <label>password:</label>
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.password)
+            @Html.ValidationMessageFor(m => m.password)
+        </div>
+
+        <div>
+            <input type="submit" value="Login" />
+            @Html.DisplayFor(m => m.msg)
+        </div>
+
+    }
+</div>
+

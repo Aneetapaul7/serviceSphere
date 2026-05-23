@@ -1,0 +1,80 @@
+﻿@model serviceSphere.Models.serviceprovider
+@{
+    ViewBag.Title = "provider_pageload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>service provider registration</h2>
+<div>
+    @using (Html.BeginForm("userreg_click", "userreg", FormMethod.Post))
+    {
+
+        <div>
+            <label>Bussiness Name/Name:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.name)
+            @Html.ValidationMessageFor(m => m.name)
+        </div>
+
+        <div>
+            <label>Address:</label>
+        </div>
+        <div>
+            @Html.TextAreaFor(m => m.address)
+        </div>
+
+
+        <div>
+            <label>email:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.email)
+            @Html.ValidationMessageFor(m => m.email)
+        </div>
+
+        <div>
+            <label>phone:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.phone)
+            @Html.ValidationMessageFor(m => m.phone)
+        </div>
+
+
+
+        <div>
+            <label>username:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.username)
+            @Html.ValidationMessageFor(m => m.username)
+        </div>
+
+
+
+        <div>
+            <label>password:</label>
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.pass)
+        </div>
+
+
+        <div>
+            <label>confirm password:</label>
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.cpassword)
+            @Html.ValidationMessageFor(m => m.cpassword)
+        </div>
+
+        <div>
+            <input type="submit" value="insert" />
+            @Html.DisplayFor(m => m.msg)
+        </div>
+
+
+    }
+</div>
+
