@@ -15,10 +15,10 @@ namespace serviceSphere
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class servicesphereEntities : DbContext
+    public partial class servicesphereEntities2 : DbContext
     {
-        public servicesphereEntities()
-            : base("name=servicesphereEntities")
+        public servicesphereEntities2()
+            : base("name=servicesphereEntities2")
         {
         }
     
@@ -28,6 +28,7 @@ namespace serviceSphere
         }
     
         public virtual DbSet<admintab> admintabs { get; set; }
+        public virtual DbSet<categorytab> categorytabs { get; set; }
         public virtual DbSet<logintab> logintabs { get; set; }
         public virtual DbSet<providertab> providertabs { get; set; }
         public virtual DbSet<usertab> usertabs { get; set; }
@@ -51,6 +52,42 @@ namespace serviceSphere
                 new ObjectParameter("phone", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_adminregister", adminidParameter, adminnameParameter, adminemailParameter, phoneParameter);
+        }
+    
+        public virtual int sp_category_delete(Nullable<int> cat_id)
+        {
+            var cat_idParameter = cat_id.HasValue ?
+                new ObjectParameter("cat_id", cat_id) :
+                new ObjectParameter("cat_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_category_delete", cat_idParameter);
+        }
+    
+        public virtual int sp_category_insert(string catname)
+        {
+            var catnameParameter = catname != null ?
+                new ObjectParameter("catname", catname) :
+                new ObjectParameter("catname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_category_insert", catnameParameter);
+        }
+    
+        public virtual ObjectResult<sp_category_select_Result> sp_category_select()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_category_select_Result>("sp_category_select");
+        }
+    
+        public virtual int sp_category_update(Nullable<int> cat_id, string cat_name)
+        {
+            var cat_idParameter = cat_id.HasValue ?
+                new ObjectParameter("cat_id", cat_id) :
+                new ObjectParameter("cat_id", typeof(int));
+    
+            var cat_nameParameter = cat_name != null ?
+                new ObjectParameter("cat_name", cat_name) :
+                new ObjectParameter("cat_name", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_category_update", cat_idParameter, cat_nameParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> sp_logid(string username, string password)

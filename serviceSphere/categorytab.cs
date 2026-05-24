@@ -12,13 +12,9 @@ namespace serviceSphere
     using System;
     using System.Collections.Generic;
     
-    public partial class usertab
+    public partial class categorytab
     {
-        public int user_id { get; set; }
-        public string user_name { get; set; }
-        public string address { get; set; }
-        public long phone { get; set; }
-        public string email { get; set; }
-        public string status { get; set; }
+        public int catid { get; set; }
+        public string catname { get; set; }
     }
 }

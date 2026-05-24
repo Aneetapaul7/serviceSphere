@@ -14,6 +14,13 @@
           <Property Name="admin_email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="admin_phone" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="categorytab">
+          <Key>
+            <PropertyRef Name="catid" />
+          </Key>
+          <Property Name="catid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="catname" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="logintab">
           <Key>
             <PropertyRef Name="login_id" />
@@ -45,7 +52,6 @@
           <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phone" Type="bigint" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="photo" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Function Name="sp_adminregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -53,6 +59,17 @@
           <Parameter Name="adminname" Type="varchar" Mode="In" />
           <Parameter Name="adminemail" Type="varchar" Mode="In" />
           <Parameter Name="phone" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="sp_category_delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cat_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_category_insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="catname" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_category_select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_category_update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cat_id" Type="int" Mode="In" />
+          <Parameter Name="cat_name" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_logid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="varchar" Mode="In" />
@@ -91,6 +108,7 @@
         </Function>
         <EntityContainer Name="servicesphereModelStoreContainer">
           <EntitySet Name="admintab" EntityType="Self.admintab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="categorytab" EntityType="Self.categorytab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="logintab" EntityType="Self.logintab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="providertab" EntityType="Self.providertab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertab" EntityType="Self.usertab" Schema="dbo" store:Type="Tables" />
@@ -108,6 +126,13 @@
           <Property Name="admin_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="admin_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="admin_phone" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="categorytab">
+          <Key>
+            <PropertyRef Name="catid" />
+          </Key>
+          <Property Name="catid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="catname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="logintab">
           <Key>
@@ -140,11 +165,11 @@
           <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phone" Type="Int64" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="photo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="servicesphereEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="servicesphereEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="admintabs" EntityType="Self.admintab" />
+          <EntitySet Name="categorytabs" EntityType="Self.categorytab" />
           <EntitySet Name="logintabs" EntityType="Self.logintab" />
           <EntitySet Name="providertabs" EntityType="Self.providertab" />
           <EntitySet Name="usertabs" EntityType="Self.usertab" />
@@ -153,6 +178,17 @@
             <Parameter Name="adminname" Mode="In" Type="String" />
             <Parameter Name="adminemail" Mode="In" Type="String" />
             <Parameter Name="phone" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="sp_category_delete">
+            <Parameter Name="cat_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_category_insert">
+            <Parameter Name="catname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_category_select" ReturnType="Collection(servicesphereModel.sp_category_select_Result)" />
+          <FunctionImport Name="sp_category_update">
+            <Parameter Name="cat_id" Mode="In" Type="Int32" />
+            <Parameter Name="cat_name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_logid" ReturnType="Collection(Int32)">
             <Parameter Name="username" Mode="In" Type="String" />
@@ -190,12 +226,16 @@
             <Parameter Name="status" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_category_select_Result">
+          <Property Type="Int32" Name="catid" Nullable="false" />
+          <Property Type="String" Name="catname" Nullable="false" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="servicesphereModelStoreContainer" CdmEntityContainer="servicesphereEntities">
+        <EntityContainerMapping StorageEntityContainer="servicesphereModelStoreContainer" CdmEntityContainer="servicesphereEntities2">
           <EntitySetMapping Name="admintabs">
             <EntityTypeMapping TypeName="servicesphereModel.admintab">
               <MappingFragment StoreEntitySet="admintab">
@@ -203,6 +243,14 @@
                 <ScalarProperty Name="admin_name" ColumnName="admin_name" />
                 <ScalarProperty Name="admin_email" ColumnName="admin_email" />
                 <ScalarProperty Name="admin_phone" ColumnName="admin_phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="categorytabs">
+            <EntityTypeMapping TypeName="servicesphereModel.categorytab">
+              <MappingFragment StoreEntitySet="categorytab">
+                <ScalarProperty Name="catid" ColumnName="catid" />
+                <ScalarProperty Name="catname" ColumnName="catname" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -238,12 +286,22 @@
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="photo" ColumnName="photo" />
                 <ScalarProperty Name="status" ColumnName="status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_adminregister" FunctionName="servicesphereModel.Store.sp_adminregister" />
+          <FunctionImportMapping FunctionImportName="sp_category_delete" FunctionName="servicesphereModel.Store.sp_category_delete" />
+          <FunctionImportMapping FunctionImportName="sp_category_insert" FunctionName="servicesphereModel.Store.sp_category_insert" />
+          <FunctionImportMapping FunctionImportName="sp_category_select" FunctionName="servicesphereModel.Store.sp_category_select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_category_select_Result">
+                <ScalarProperty Name="catid" ColumnName="catid" />
+                <ScalarProperty Name="catname" ColumnName="catname" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_category_update" FunctionName="servicesphereModel.Store.sp_category_update" />
           <FunctionImportMapping FunctionImportName="sp_logid" FunctionName="servicesphereModel.Store.sp_logid" />
           <FunctionImportMapping FunctionImportName="sp_logincountid" FunctionName="servicesphereModel.Store.sp_logincountid" />
           <FunctionImportMapping FunctionImportName="sp_logininsert" FunctionName="servicesphereModel.Store.sp_logininsert" />

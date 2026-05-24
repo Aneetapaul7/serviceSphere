@@ -1,0 +1,27 @@
+﻿@model serviceSphere.Models.category
+@{
+    ViewBag.Title = "category_pageload";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>add category</h2>
+<div>
+    @using (Html.BeginForm("category_clickinsert", "category", FormMethod.Post))
+    {
+        <div>
+            <label>Service category Name:</label>
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.cat_name)
+            @Html.ValidationMessageFor(m => m.cat_name)
+        </div>
+
+
+
+        <div>
+            <input type="submit" value="create" />
+            @Html.DisplayFor(m => m.msg)
+        </div>
+
+    }
+</div>

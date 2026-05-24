@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    margin-bottom: 60px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -22,3 +23,47 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Navbar full width */
+.navbar .container {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Remove extra right spacing */
+.navbar-nav.navbar-right {
+    margin-right: 0px;
+}
+
+/* Increase gap between menu items */
+.navbar-nav > li {
+    margin-left: 10px;
+}
+/* Fixed footer at bottom */
+
+
+/* Prevent content hiding behind footer */
+/*foooterrr*/
+
+
+/*html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.body-content {
+    min-height: calc(100vh - 120px);
+    padding-bottom: 20px;
+}
+
+.footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}*/
