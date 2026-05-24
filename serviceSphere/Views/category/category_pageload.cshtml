@@ -25,3 +25,34 @@
 
     }
 </div>
+
+<br />
+<br />
+
+<h3>Category List</h3>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>ID</th>
+        <th>Category Name</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in ViewBag.categorylist)
+    {
+<tr>
+    <td>@item.catid</td>
+<td>@item.catname</td>
+
+<td>
+    @Html.ActionLink(
+    "Delete",
+    "category_delete",
+    new { id = item.catid },
+    new { @class = "btn btn-danger" })
+</td>
+</tr>
+    }
+
+</table>

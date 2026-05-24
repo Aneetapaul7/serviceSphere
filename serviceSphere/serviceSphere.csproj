@@ -239,6 +239,7 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\login\adminhome.cshtml" />
     <Content Include="Views\category\category_pageload.cshtml" />
+    <Content Include="Views\Shared\_ProviderLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

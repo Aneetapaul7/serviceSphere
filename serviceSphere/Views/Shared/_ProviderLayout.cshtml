@@ -1,0 +1,127 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Provider Dashboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #343a40;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+            .sidebar h2 {
+                color: white;
+                text-align: center;
+                padding: 20px 0;
+                border-bottom: 1px solid #555;
+            }
+
+            .sidebar a {
+                display: block;
+                color: white;
+                padding: 15px 20px;
+                text-decoration: none;
+                font-size: 16px;
+            }
+
+                .sidebar a:hover {
+                    background: #007bff;
+                }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .topbar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .card-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px #ccc;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <h2>Provider</h2>
+
+        <a href="@Url.Action("providerhome", "Provider")">
+            <i class="fa fa-home"></i> Dashboard
+        </a>
+
+        <a href="@Url.Action("addservice", "Provider")">
+            <i class="fa fa-plus"></i> Add Service
+        </a>
+
+        <a href="@Url.Action("viewservice", "Provider")">
+            <i class="fa fa-list"></i> View Services
+        </a>
+
+        <a href="@Url.Action("bookinglist", "Provider")">
+            <i class="fa fa-calendar"></i> Bookings
+        </a>
+
+        <a href="@Url.Action("profile", "Provider")">
+            <i class="fa fa-user"></i> Profile
+        </a>
+
+        <a href="@Url.Action("logout", "Login")">
+            <i class="fa fa-sign-out"></i> Logout
+        </a>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Topbar -->
+        <div class="topbar">
+
+            <h3>
+                Welcome Provider
+            </h3>
+
+        </div>
+
+        <!-- Page Content -->
+        @RenderBody()
+
+    </div>
+
+</body>
+</html>

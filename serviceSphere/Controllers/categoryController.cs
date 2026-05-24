@@ -13,6 +13,7 @@ namespace serviceSphere.Controllers
         // GET: category
         public ActionResult category_pageload()
         {
+            ViewBag.categorylist = dbobj.sp_category_select().ToList();
             return View();
         }
 
@@ -21,13 +22,19 @@ namespace serviceSphere.Controllers
             if (ModelState.IsValid) { 
             dbobj.sp_category_insert(clsobj.cat_name);
             clsobj.msg = "category added suceessfullyyyy";
-            return View("category_pageload",clsobj);
+            ViewBag.categorylist = dbobj.sp_category_select().ToList();
+                return View("category_pageload",clsobj);
             }
-
+            ViewBag.categorylist = dbobj.sp_category_select().ToList();
             return View("category_pageload", clsobj);
         }
 
+        public ActionResult category_delete(int id)
+        {
+            dbobj.sp_category_delete(id);
 
+            return RedirectToAction("category_pageload");
+        }
 
     }
 }

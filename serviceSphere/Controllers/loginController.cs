@@ -56,7 +56,7 @@ namespace serviceSphere.Controllers
                     {
                         return RedirectToAction("adminhome");
                     }
-                    else if (lt == "servicepropvider")
+                    else if (lt == "serviceprovider")
                     {
                         return RedirectToAction("providerhome");
                     }
