@@ -10,7 +10,7 @@ namespace serviceSphere.Controllers
  
     public class userregController : Controller
     {
-        servicesphereEntities2 dbobj = new servicesphereEntities2();
+        servicesphereEntities dbobj = new servicesphereEntities();
         // GET: userreg
         public ActionResult userreg_pageload()
         {

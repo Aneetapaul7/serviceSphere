@@ -9,7 +9,7 @@ namespace serviceSphere.Controllers
 {
     public class providerregController : Controller
     {
-        servicesphereEntities2 dbobj = new servicesphereEntities2();
+        servicesphereEntities dbobj = new servicesphereEntities();
         // GET: providerreg
         public ActionResult provider_pageload()
         {

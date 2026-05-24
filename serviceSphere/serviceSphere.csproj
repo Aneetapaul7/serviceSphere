@@ -139,6 +139,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\loginController.cs" />
     <Compile Include="Controllers\providerregController.cs" />
+    <Compile Include="Controllers\serviceController.cs" />
     <Compile Include="Controllers\userregController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -164,13 +165,23 @@
     <Compile Include="Models\admininsert.cs" />
     <Compile Include="Models\category.cs" />
     <Compile Include="Models\login.cs" />
+    <Compile Include="Models\service.cs" />
     <Compile Include="Models\serviceprovider.cs" />
     <Compile Include="Models\userinsert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="providertab.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="servicetab.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_category_select_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_get_service_by_id_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_view_provider_services_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="usertab.cs">
@@ -240,9 +251,11 @@
     <Content Include="Views\login\adminhome.cshtml" />
     <Content Include="Views\category\category_pageload.cshtml" />
     <Content Include="Views\Shared\_ProviderLayout.cshtml" />
+    <Content Include="Views\service\service_pageload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="photos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

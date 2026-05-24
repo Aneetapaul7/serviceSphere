@@ -9,7 +9,7 @@ namespace serviceSphere.Controllers
 {
     public class loginController : Controller
     {
-        servicesphereEntities2 dbobj = new servicesphereEntities2();
+        servicesphereEntities dbobj = new servicesphereEntities();
         // GET: login
         public ActionResult login_pageload()
         {

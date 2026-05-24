@@ -9,7 +9,7 @@ namespace serviceSphere.Controllers
 {
     public class adminregController : Controller
     {
-        servicesphereEntities2 dbobj = new servicesphereEntities2();
+        servicesphereEntities dbobj = new servicesphereEntities();
         // GET: adminreg
         public ActionResult insertadmin_pageload()
         {

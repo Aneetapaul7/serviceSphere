@@ -1,0 +1,82 @@
+﻿@model serviceSphere.Models.service
+@{
+    ViewBag.Title = "service_pageload";
+    Layout = "~/Views/Shared/_ProviderLayout.cshtml";
+}
+
+<h2>Add service</h2>
+
+@using (Html.BeginForm("service_click",
+                        "service",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+
+        <label>Category</label>
+
+        @Html.DropDownListFor(m => m.category_id,
+        (IEnumerable<SelectListItem>)ViewBag.category,
+        "--Select Category--",
+        new { @class = "form-control" })
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Service Name</label>
+
+        @Html.TextBoxFor(m => m.service_name,
+        new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m => m.service_name)
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Description</label>
+
+        @Html.TextAreaFor(m => m.service_description,
+        new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m => m.service_description)
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Price</label>
+
+        @Html.TextBoxFor(m => m.service_price,
+        new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m => m.service_price)
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Service Image</label>
+
+        <input type="file" name="file" class="form-control" />
+
+        @Html.ValidationMessageFor(m => m.file)
+
+    </div>
+
+    <br />
+
+    <div>
+        <input type="submit" value="create" />
+
+        @if (Model != null && Model.msg != null)
+        {
+            <div class="text-success">
+                @Model.msg
+            </div>
+        }
+    </div>
+}
+
+<br />

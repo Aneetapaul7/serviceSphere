@@ -15,10 +15,10 @@ namespace serviceSphere
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class servicesphereEntities2 : DbContext
+    public partial class servicesphereEntities : DbContext
     {
-        public servicesphereEntities2()
-            : base("name=servicesphereEntities2")
+        public servicesphereEntities()
+            : base("name=servicesphereEntities")
         {
         }
     
@@ -31,6 +31,7 @@ namespace serviceSphere
         public virtual DbSet<categorytab> categorytabs { get; set; }
         public virtual DbSet<logintab> logintabs { get; set; }
         public virtual DbSet<providertab> providertabs { get; set; }
+        public virtual DbSet<servicetab> servicetabs { get; set; }
         public virtual DbSet<usertab> usertabs { get; set; }
     
         public virtual int sp_adminregister(Nullable<int> adminid, string adminname, string adminemail, Nullable<long> phone)
@@ -77,17 +78,46 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_category_select_Result>("sp_category_select");
         }
     
-        public virtual int sp_category_update(Nullable<int> cat_id, string cat_name)
+        public virtual int sp_delete_service(Nullable<int> service_id)
         {
-            var cat_idParameter = cat_id.HasValue ?
-                new ObjectParameter("cat_id", cat_id) :
-                new ObjectParameter("cat_id", typeof(int));
+            var service_idParameter = service_id.HasValue ?
+                new ObjectParameter("service_id", service_id) :
+                new ObjectParameter("service_id", typeof(int));
     
-            var cat_nameParameter = cat_name != null ?
-                new ObjectParameter("cat_name", cat_name) :
-                new ObjectParameter("cat_name", typeof(string));
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_delete_service", service_idParameter);
+        }
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_category_update", cat_idParameter, cat_nameParameter);
+        public virtual int sp_insert_service(Nullable<int> provider_regid, Nullable<int> category_id, string service_name, string service_description, Nullable<int> service_price, string service_image, string service_status)
+        {
+            var provider_regidParameter = provider_regid.HasValue ?
+                new ObjectParameter("provider_regid", provider_regid) :
+                new ObjectParameter("provider_regid", typeof(int));
+    
+            var category_idParameter = category_id.HasValue ?
+                new ObjectParameter("category_id", category_id) :
+                new ObjectParameter("category_id", typeof(int));
+    
+            var service_nameParameter = service_name != null ?
+                new ObjectParameter("service_name", service_name) :
+                new ObjectParameter("service_name", typeof(string));
+    
+            var service_descriptionParameter = service_description != null ?
+                new ObjectParameter("service_description", service_description) :
+                new ObjectParameter("service_description", typeof(string));
+    
+            var service_priceParameter = service_price.HasValue ?
+                new ObjectParameter("service_price", service_price) :
+                new ObjectParameter("service_price", typeof(int));
+    
+            var service_imageParameter = service_image != null ?
+                new ObjectParameter("service_image", service_image) :
+                new ObjectParameter("service_image", typeof(string));
+    
+            var service_statusParameter = service_status != null ?
+                new ObjectParameter("service_status", service_status) :
+                new ObjectParameter("service_status", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_insert_service", provider_regidParameter, category_idParameter, service_nameParameter, service_descriptionParameter, service_priceParameter, service_imageParameter, service_statusParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> sp_logid(string username, string password)
@@ -184,6 +214,39 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_providersregister", providerregidParameter, bussinessnameParameter, addressParameter, emailParameter, phoneParameter, isapprovedParameter);
         }
     
+        public virtual int sp_update_service(Nullable<int> service_id, Nullable<int> category_id, string service_name, string service_description, Nullable<int> service_price, string service_image, string service_status)
+        {
+            var service_idParameter = service_id.HasValue ?
+                new ObjectParameter("service_id", service_id) :
+                new ObjectParameter("service_id", typeof(int));
+    
+            var category_idParameter = category_id.HasValue ?
+                new ObjectParameter("category_id", category_id) :
+                new ObjectParameter("category_id", typeof(int));
+    
+            var service_nameParameter = service_name != null ?
+                new ObjectParameter("service_name", service_name) :
+                new ObjectParameter("service_name", typeof(string));
+    
+            var service_descriptionParameter = service_description != null ?
+                new ObjectParameter("service_description", service_description) :
+                new ObjectParameter("service_description", typeof(string));
+    
+            var service_priceParameter = service_price.HasValue ?
+                new ObjectParameter("service_price", service_price) :
+                new ObjectParameter("service_price", typeof(int));
+    
+            var service_imageParameter = service_image != null ?
+                new ObjectParameter("service_image", service_image) :
+                new ObjectParameter("service_image", typeof(string));
+    
+            var service_statusParameter = service_status != null ?
+                new ObjectParameter("service_status", service_status) :
+                new ObjectParameter("service_status", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_update_service", service_idParameter, category_idParameter, service_nameParameter, service_descriptionParameter, service_priceParameter, service_imageParameter, service_statusParameter);
+        }
+    
         public virtual int sp_userregister(Nullable<int> userid, string username, string photo, string address, string email, string status)
         {
             var useridParameter = userid.HasValue ?
@@ -211,6 +274,24 @@ namespace serviceSphere
                 new ObjectParameter("status", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_userregister", useridParameter, usernameParameter, photoParameter, addressParameter, emailParameter, statusParameter);
+        }
+    
+        public virtual ObjectResult<sp_view_provider_services_Result> sp_view_provider_services(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_view_provider_services_Result>("sp_view_provider_services", provider_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_get_service_by_id_Result> sp_get_service_by_id(Nullable<int> service_id)
+        {
+            var service_idParameter = service_id.HasValue ?
+                new ObjectParameter("service_id", service_id) :
+                new ObjectParameter("service_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_service_by_id_Result>("sp_get_service_by_id", service_idParameter);
         }
     }
 }

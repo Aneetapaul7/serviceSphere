@@ -9,7 +9,7 @@ namespace serviceSphere.Controllers
 {
     public class categoryController : Controller
     {
-        servicesphereEntities2 dbobj = new servicesphereEntities2();
+        servicesphereEntities dbobj = new servicesphereEntities();
         // GET: category
         public ActionResult category_pageload()
         {
