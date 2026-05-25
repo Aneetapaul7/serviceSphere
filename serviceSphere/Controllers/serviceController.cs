@@ -73,7 +73,7 @@ namespace serviceSphere.Controllers
 
                     // SAVE IMAGE NAME TO DATABASE
 
-                    img= fname;
+                    img= "/photos/" + fname;
                 }
 
 

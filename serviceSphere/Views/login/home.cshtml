@@ -1,8 +1,59 @@
-﻿
+﻿@model IEnumerable<serviceSphere.sp_get_all_services_Result>
+
 @{
     ViewBag.Title = "home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2> user home</h2>
+<div class="container mt-5">
 
+    <h2 class="text-center mb-4">Our Services</h2>
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card shadow" style="height:450px;">
+
+                    <img src="@Url.Content(item.service_image)"
+                         class="card-img-top"
+                         style="height:220px; object-fit:cover;" />
+
+                    <div class="card-body">
+
+                        <h4>
+                            Service:  @item.service_name
+                        </h4>
+
+                        <p>
+                            @item.service_description
+                        </p>
+                        <p>
+                            Rateing : ⭐ @item.rating
+                        </p>
+
+                        <h5>
+                            Price start with:
+                            <span class="text-success">₹ @item.service_price</span>
+                        </h5>
+
+                        <p>
+                            Location :  @item.location
+                        </p>
+                        <a href="#"
+                           class="btn btn-primary btn-block mt-3">
+                            Book Service Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

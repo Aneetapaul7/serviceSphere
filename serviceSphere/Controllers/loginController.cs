@@ -19,9 +19,10 @@ namespace serviceSphere.Controllers
 
         public ActionResult home()
         {
-            return View();
-        }
+            var services = dbobj.sp_get_all_services().ToList();
 
+            return View(services);
+        }
 
 
         public ActionResult adminhome()

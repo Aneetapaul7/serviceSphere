@@ -352,5 +352,10 @@ namespace serviceSphere
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_check_provider_status", provider_idParameter);
         }
+    
+        public virtual ObjectResult<sp_get_all_services_Result> sp_get_all_services()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_services_Result>("sp_get_all_services");
+        }
     }
 }

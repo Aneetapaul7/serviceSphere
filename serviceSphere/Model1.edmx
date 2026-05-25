@@ -94,6 +94,7 @@
         <Function Name="sp_delete_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_get_all_services" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_approved_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_blocked_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_pending_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -334,8 +335,9 @@
           <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_check_provider_status" ReturnType="Collection(String)">
-            <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_get_all_services" ReturnType="Collection(servicesphereModel.sp_get_all_services_Result)" />
         </EntityContainer>
         <ComplexType Name="sp_category_select_Result">
           <Property Type="Int32" Name="catid" Nullable="false" />
@@ -381,6 +383,18 @@
           <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
         </ComplexType>
         <ComplexType Name="sp_view_provider_services_Result">
+          <Property Type="Int32" Name="service_id" Nullable="false" />
+          <Property Type="Int32" Name="provider_regid" Nullable="false" />
+          <Property Type="Int32" Name="category_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="service_description" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="service_price" Nullable="false" />
+          <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
+        </ComplexType>
+        <ComplexType Name="sp_get_all_services_Result">
           <Property Type="Int32" Name="service_id" Nullable="false" />
           <Property Type="Int32" Name="provider_regid" Nullable="false" />
           <Property Type="Int32" Name="category_id" Nullable="false" />
@@ -564,6 +578,22 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_check_provider_status" FunctionName="servicesphereModel.Store.sp_check_provider_status" />
+          <FunctionImportMapping FunctionImportName="sp_get_all_services" FunctionName="servicesphereModel.Store.sp_get_all_services">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_all_services_Result">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="provider_regid" ColumnName="provider_regid" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_description" ColumnName="service_description" />
+                <ScalarProperty Name="service_price" ColumnName="service_price" />
+                <ScalarProperty Name="service_image" ColumnName="service_image" />
+                <ScalarProperty Name="service_status" ColumnName="service_status" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
