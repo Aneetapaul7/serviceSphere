@@ -263,6 +263,7 @@
     <Content Include="Views\service\service_pageload.cshtml" />
     <Content Include="Views\service\viewservice.cshtml" />
     <Content Include="Views\service\edit_service.cshtml" />
+    <Content Include="Views\adminreg\viewproviders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -43,6 +43,45 @@ namespace serviceSphere.Controllers
 
         }
 
+        public ActionResult viewproviders()
+        {
+            ViewBag.pending =
+                dbobj.sp_get_pending_providers().ToList();
+
+            ViewBag.approved =
+                dbobj.sp_get_approved_providers().ToList();
+
+            ViewBag.blocked =
+                dbobj.sp_get_blocked_providers().ToList();
+
+            return View();
+        }
+
+
+
+
+        public ActionResult approve_provider(int id)
+        {
+            dbobj.sp_approve_provider(id);
+
+            return RedirectToAction("viewproviders");
+        }
+
+
+        public ActionResult block_provider(int id)
+        {
+            dbobj.sp_block_provider(id);
+
+            return RedirectToAction("viewproviders");
+        }
+
+        public ActionResult unblock_provider(int id)
+        {
+            dbobj.sp_unblock_provider(id);
+
+            return RedirectToAction("viewproviders");
+        }
+
 
 
     }

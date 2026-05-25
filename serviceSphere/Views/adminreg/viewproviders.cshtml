@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "viewproviders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Pending Providers</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in ViewBag.pending)
+    {
+<tr>
+
+    <td>@item.bussiness_name</td>
+    <td>@item.email</td>
+
+    <td>
+
+        @Html.ActionLink(
+        "Approve",
+        "approve_provider",
+        new { id = item.provider_id })
+
+    </td>
+
+</tr>}
+
+</table>
+
+<br />
+<br />
+
+<h2>Approved Providers</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in ViewBag.approved)
+    {
+<tr>
+
+    <td>@item.bussiness_name</td>
+    <td>@item.email</td>
+
+    <td>
+
+        @Html.ActionLink(
+        "Block",
+        "block_provider",
+        new { id = item.provider_id })
+
+    </td>
+
+</tr>}
+
+</table>
+
+<br />
+<br />
+
+<h2>Blocked Providers</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in ViewBag.blocked)
+    {
+<tr>
+
+    <td>@item.bussiness_name</td>
+    <td>@item.email</td>
+
+    <td>
+
+        @Html.ActionLink(
+        "Unblock",
+        "unblock_provider",
+        new { id = item.provider_id })
+
+    </td>
+
+</tr>}
+
+</table>
