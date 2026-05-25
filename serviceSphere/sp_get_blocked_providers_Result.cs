@@ -10,9 +10,8 @@
 namespace serviceSphere
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class providertab
+    public partial class sp_get_blocked_providers_Result
     {
         public int provider_id { get; set; }
         public Nullable<int> reg_id { get; set; }

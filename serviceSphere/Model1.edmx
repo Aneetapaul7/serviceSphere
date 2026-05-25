@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="admintab">
           <Key>
             <PropertyRef Name="admin_id" />
@@ -41,7 +41,7 @@
           <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phone" Type="bigint" Nullable="false" />
-          <Property Name="is_approved" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="is_approve" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="servicetab">
           <Key>
@@ -75,6 +75,12 @@
           <Parameter Name="adminemail" Type="varchar" Mode="In" />
           <Parameter Name="phone" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="sp_approve_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_block_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_category_delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="cat_id" Type="int" Mode="In" />
         </Function>
@@ -82,9 +88,15 @@
           <Parameter Name="catname" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_category_select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_check_provider_status" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_delete_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_get_approved_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_get_blocked_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_get_pending_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_service_by_id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
         </Function>
@@ -125,6 +137,9 @@
           <Parameter Name="phone" Type="bigint" Mode="In" />
           <Parameter Name="isapproved" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_unblock_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_update_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
           <Parameter Name="category_id" Type="int" Mode="In" />
@@ -154,8 +169,7 @@
           <EntitySet Name="servicetab" EntityType="Self.servicetab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertab" EntityType="Self.usertab" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="servicesphereModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -195,7 +209,7 @@
           <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phone" Type="Int64" Nullable="false" />
-          <Property Name="is_approved" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="is_approve" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="servicetab">
           <Key>
@@ -236,18 +250,27 @@
             <Parameter Name="adminemail" Mode="In" Type="String" />
             <Parameter Name="phone" Mode="In" Type="Int64" />
           </FunctionImport>
+          <FunctionImport Name="sp_approve_provider">
+          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_block_provider">
+          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_category_delete">
-            <Parameter Name="cat_id" Mode="In" Type="Int32" />
+          <Parameter Name="cat_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_category_insert">
-            <Parameter Name="catname" Mode="In" Type="String" />
+          <Parameter Name="catname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_category_select" ReturnType="Collection(servicesphereModel.sp_category_select_Result)" />
           <FunctionImport Name="sp_delete_service">
-            <Parameter Name="service_id" Mode="In" Type="Int32" />
+          <Parameter Name="service_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_get_approved_providers" ReturnType="Collection(servicesphereModel.sp_get_approved_providers_Result)" />
+          <FunctionImport Name="sp_get_blocked_providers" ReturnType="Collection(servicesphereModel.sp_get_blocked_providers_Result)" />
+          <FunctionImport Name="sp_get_pending_providers" ReturnType="Collection(servicesphereModel.sp_get_pending_providers_Result)" />
           <FunctionImport Name="sp_get_service_by_id" ReturnType="Collection(servicesphereModel.sp_get_service_by_id_Result)">
-            <Parameter Name="service_id" Mode="In" Type="Int32" />
+          <Parameter Name="service_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_insert_service">
             <Parameter Name="provider_regid" Mode="In" Type="Int32" />
@@ -286,6 +309,9 @@
             <Parameter Name="phone" Mode="In" Type="Int64" />
             <Parameter Name="isapproved" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_unblock_provider">
+          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_update_service">
             <Parameter Name="service_id" Mode="In" Type="Int32" />
             <Parameter Name="category_id" Mode="In" Type="Int32" />
@@ -305,12 +331,42 @@
             <Parameter Name="status" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_view_provider_services" ReturnType="Collection(servicesphereModel.sp_view_provider_services_Result)">
+          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_check_provider_status" ReturnType="Collection(String)">
             <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_category_select_Result">
           <Property Type="Int32" Name="catid" Nullable="false" />
           <Property Type="String" Name="catname" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_approved_providers_Result">
+          <Property Type="Int32" Name="provider_id" Nullable="false" />
+          <Property Type="Int32" Name="reg_id" Nullable="true" />
+          <Property Type="String" Name="bussiness_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="is_approve" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_blocked_providers_Result">
+          <Property Type="Int32" Name="provider_id" Nullable="false" />
+          <Property Type="Int32" Name="reg_id" Nullable="true" />
+          <Property Type="String" Name="bussiness_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="is_approve" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_pending_providers_Result">
+          <Property Type="Int32" Name="provider_id" Nullable="false" />
+          <Property Type="Int32" Name="reg_id" Nullable="true" />
+          <Property Type="String" Name="bussiness_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="is_approve" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="sp_get_service_by_id_Result">
           <Property Type="Int32" Name="service_id" Nullable="false" />
@@ -380,7 +436,7 @@
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+                <ScalarProperty Name="is_approve" ColumnName="is_approve" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -413,6 +469,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_adminregister" FunctionName="servicesphereModel.Store.sp_adminregister" />
+          <FunctionImportMapping FunctionImportName="sp_approve_provider" FunctionName="servicesphereModel.Store.sp_approve_provider" />
+          <FunctionImportMapping FunctionImportName="sp_block_provider" FunctionName="servicesphereModel.Store.sp_block_provider" />
           <FunctionImportMapping FunctionImportName="sp_category_delete" FunctionName="servicesphereModel.Store.sp_category_delete" />
           <FunctionImportMapping FunctionImportName="sp_category_insert" FunctionName="servicesphereModel.Store.sp_category_insert" />
           <FunctionImportMapping FunctionImportName="sp_category_select" FunctionName="servicesphereModel.Store.sp_category_select">
@@ -424,6 +482,45 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_delete_service" FunctionName="servicesphereModel.Store.sp_delete_service" />
+          <FunctionImportMapping FunctionImportName="sp_get_approved_providers" FunctionName="servicesphereModel.Store.sp_get_approved_providers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_approved_providers_Result">
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="reg_id" ColumnName="reg_id" />
+                <ScalarProperty Name="bussiness_name" ColumnName="bussiness_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="is_approve" ColumnName="is_approve" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_blocked_providers" FunctionName="servicesphereModel.Store.sp_get_blocked_providers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_blocked_providers_Result">
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="reg_id" ColumnName="reg_id" />
+                <ScalarProperty Name="bussiness_name" ColumnName="bussiness_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="is_approve" ColumnName="is_approve" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_pending_providers" FunctionName="servicesphereModel.Store.sp_get_pending_providers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_pending_providers_Result">
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="reg_id" ColumnName="reg_id" />
+                <ScalarProperty Name="bussiness_name" ColumnName="bussiness_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="is_approve" ColumnName="is_approve" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_get_service_by_id" FunctionName="servicesphereModel.Store.sp_get_service_by_id">
             <ResultMapping>
               <ComplexTypeMapping TypeName="servicesphereModel.sp_get_service_by_id_Result">
@@ -447,6 +544,7 @@
           <FunctionImportMapping FunctionImportName="sp_logintype" FunctionName="servicesphereModel.Store.sp_logintype" />
           <FunctionImportMapping FunctionImportName="sp_maxidlogin" FunctionName="servicesphereModel.Store.sp_maxidlogin" />
           <FunctionImportMapping FunctionImportName="sp_providersregister" FunctionName="servicesphereModel.Store.sp_providersregister" />
+          <FunctionImportMapping FunctionImportName="sp_unblock_provider" FunctionName="servicesphereModel.Store.sp_unblock_provider" />
           <FunctionImportMapping FunctionImportName="sp_update_service" FunctionName="servicesphereModel.Store.sp_update_service" />
           <FunctionImportMapping FunctionImportName="sp_userregister" FunctionName="servicesphereModel.Store.sp_userregister" />
           <FunctionImportMapping FunctionImportName="sp_view_provider_services" FunctionName="servicesphereModel.Store.sp_view_provider_services">
@@ -465,6 +563,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_check_provider_status" FunctionName="servicesphereModel.Store.sp_check_provider_status" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -58,7 +58,29 @@ namespace serviceSphere.Controllers
                     }
                     else if (lt == "serviceprovider")
                     {
-                        return RedirectToAction("providerhome");
+                        var status = dbobj.sp_check_provider_status(uid)
+                                          .FirstOrDefault();
+
+                        if (status == "pending")
+                        {
+                            ModelState.Clear();
+                            clsobj.msg = "Waiting for admin approval";
+
+                            return View("login_pageload", clsobj);
+                        }
+
+                        else if (status == "blocked")
+                        {
+                            ModelState.Clear();
+                            clsobj.msg = "Your account is blocked by admin";
+
+                            return View("login_pageload", clsobj);
+                        }
+
+                        else if (status == "approved")
+                        {
+                            return RedirectToAction("providerhome");
+                        }
                     }
                 }
                 else

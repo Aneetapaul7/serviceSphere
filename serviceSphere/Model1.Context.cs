@@ -55,6 +55,24 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_adminregister", adminidParameter, adminnameParameter, adminemailParameter, phoneParameter);
         }
     
+        public virtual int sp_approve_provider(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_approve_provider", provider_idParameter);
+        }
+    
+        public virtual int sp_block_provider(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_block_provider", provider_idParameter);
+        }
+    
         public virtual int sp_category_delete(Nullable<int> cat_id)
         {
             var cat_idParameter = cat_id.HasValue ?
@@ -85,6 +103,21 @@ namespace serviceSphere
                 new ObjectParameter("service_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_delete_service", service_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_get_approved_providers_Result> sp_get_approved_providers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_approved_providers_Result>("sp_get_approved_providers");
+        }
+    
+        public virtual ObjectResult<sp_get_blocked_providers_Result> sp_get_blocked_providers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_blocked_providers_Result>("sp_get_blocked_providers");
+        }
+    
+        public virtual ObjectResult<sp_get_pending_providers_Result> sp_get_pending_providers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_pending_providers_Result>("sp_get_pending_providers");
         }
     
         public virtual ObjectResult<sp_get_service_by_id_Result> sp_get_service_by_id(Nullable<int> service_id)
@@ -227,6 +260,15 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_providersregister", providerregidParameter, bussinessnameParameter, addressParameter, emailParameter, phoneParameter, isapprovedParameter);
         }
     
+        public virtual int sp_unblock_provider(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_unblock_provider", provider_idParameter);
+        }
+    
         public virtual int sp_update_service(Nullable<int> service_id, Nullable<int> category_id, string service_name, string service_description, Nullable<int> service_price, string service_image, string service_status, string location)
         {
             var service_idParameter = service_id.HasValue ?
@@ -300,6 +342,15 @@ namespace serviceSphere
                 new ObjectParameter("provider_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_view_provider_services_Result>("sp_view_provider_services", provider_idParameter);
+        }
+    
+        public virtual ObjectResult<string> sp_check_provider_status(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_check_provider_status", provider_idParameter);
         }
     }
 }

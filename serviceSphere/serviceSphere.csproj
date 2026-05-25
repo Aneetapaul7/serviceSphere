@@ -178,6 +178,15 @@
     <Compile Include="sp_category_select_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_get_approved_providers_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_get_blocked_providers_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_get_pending_providers_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_get_service_by_id_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
