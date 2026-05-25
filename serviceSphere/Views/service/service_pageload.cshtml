@@ -54,6 +54,14 @@
         @Html.ValidationMessageFor(m => m.service_price)
 
     </div>
+    <div class="form-group">
+
+        <label>Locations Available</label>
+
+        @Html.TextBoxFor(m => m.location,
+        new { @class = "form-control", placeholder = "Enter location" })
+
+    </div>
 
     <div class="form-group">
 

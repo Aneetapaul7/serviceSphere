@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2bfd36bf74f041c0a66a9c725d0661dc" Name="Diagram1">
+      <Diagram DiagramId="bd273fb3a12a49e6945e9f21dcf17db6" Name="Diagram1">
         <EntityTypeShape EntityType="servicesphereModel.admintab" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="servicesphereModel.categorytab" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="servicesphereModel.logintab" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />

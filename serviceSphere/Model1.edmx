@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="admintab">
           <Key>
             <PropertyRef Name="admin_id" />
@@ -55,6 +55,8 @@
           <Property Name="service_price" Type="int" Nullable="false" />
           <Property Name="service_image" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="service_status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="location" Type="varchar" MaxLength="50" />
+          <Property Name="rating" Type="decimal" Precision="2" Scale="1" />
         </EntityType>
         <EntityType Name="usertab">
           <Key>
@@ -94,6 +96,7 @@
           <Parameter Name="service_price" Type="int" Mode="In" />
           <Parameter Name="service_image" Type="varchar" Mode="In" />
           <Parameter Name="service_status" Type="varchar" Mode="In" />
+          <Parameter Name="location" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_logid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="varchar" Mode="In" />
@@ -150,7 +153,8 @@
           <EntitySet Name="servicetab" EntityType="Self.servicetab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertab" EntityType="Self.usertab" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="servicesphereModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -204,6 +208,8 @@
           <Property Name="service_price" Type="Int32" Nullable="false" />
           <Property Name="service_image" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="service_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rating" Type="Decimal" Precision="2" Scale="1" />
         </EntityType>
         <EntityType Name="usertab">
           <Key>
@@ -230,14 +236,17 @@
             <Parameter Name="phone" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="sp_category_delete">
-          <Parameter Name="cat_id" Mode="In" Type="Int32" />
+            <Parameter Name="cat_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_category_insert">
-          <Parameter Name="catname" Mode="In" Type="String" />
+            <Parameter Name="catname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_category_select" ReturnType="Collection(servicesphereModel.sp_category_select_Result)" />
           <FunctionImport Name="sp_delete_service">
-          <Parameter Name="service_id" Mode="In" Type="Int32" />
+            <Parameter Name="service_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_get_service_by_id" ReturnType="Collection(servicesphereModel.sp_get_service_by_id_Result)">
+            <Parameter Name="service_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_insert_service">
             <Parameter Name="provider_regid" Mode="In" Type="Int32" />
@@ -247,6 +256,7 @@
             <Parameter Name="service_price" Mode="In" Type="Int32" />
             <Parameter Name="service_image" Mode="In" Type="String" />
             <Parameter Name="service_status" Mode="In" Type="String" />
+            <Parameter Name="location" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_logid" ReturnType="Collection(Int32)">
             <Parameter Name="username" Mode="In" Type="String" />
@@ -293,25 +303,12 @@
             <Parameter Name="status" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_view_provider_services" ReturnType="Collection(servicesphereModel.sp_view_provider_services_Result)">
-          <Parameter Name="provider_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_get_service_by_id" ReturnType="Collection(servicesphereModel.sp_get_service_by_id_Result)">
-            <Parameter Name="service_id" Mode="In" Type="Int32" />
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_category_select_Result">
           <Property Type="Int32" Name="catid" Nullable="false" />
           <Property Type="String" Name="catname" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="sp_view_provider_services_Result">
-          <Property Type="Int32" Name="service_id" Nullable="false" />
-          <Property Type="Int32" Name="provider_regid" Nullable="false" />
-          <Property Type="Int32" Name="category_id" Nullable="false" />
-          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="service_description" Nullable="false" MaxLength="500" />
-          <Property Type="Int32" Name="service_price" Nullable="false" />
-          <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
-          <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="sp_get_service_by_id_Result">
           <Property Type="Int32" Name="service_id" Nullable="false" />
@@ -322,6 +319,20 @@
           <Property Type="Int32" Name="service_price" Nullable="false" />
           <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
+        </ComplexType>
+        <ComplexType Name="sp_view_provider_services_Result">
+          <Property Type="Int32" Name="service_id" Nullable="false" />
+          <Property Type="Int32" Name="provider_regid" Nullable="false" />
+          <Property Type="Int32" Name="category_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="service_description" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="service_price" Nullable="false" />
+          <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -382,6 +393,8 @@
                 <ScalarProperty Name="service_price" ColumnName="service_price" />
                 <ScalarProperty Name="service_image" ColumnName="service_image" />
                 <ScalarProperty Name="service_status" ColumnName="service_status" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -409,6 +422,22 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_delete_service" FunctionName="servicesphereModel.Store.sp_delete_service" />
+          <FunctionImportMapping FunctionImportName="sp_get_service_by_id" FunctionName="servicesphereModel.Store.sp_get_service_by_id">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_service_by_id_Result">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="provider_regid" ColumnName="provider_regid" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_description" ColumnName="service_description" />
+                <ScalarProperty Name="service_price" ColumnName="service_price" />
+                <ScalarProperty Name="service_image" ColumnName="service_image" />
+                <ScalarProperty Name="service_status" ColumnName="service_status" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_insert_service" FunctionName="servicesphereModel.Store.sp_insert_service" />
           <FunctionImportMapping FunctionImportName="sp_logid" FunctionName="servicesphereModel.Store.sp_logid" />
           <FunctionImportMapping FunctionImportName="sp_logincountid" FunctionName="servicesphereModel.Store.sp_logincountid" />
@@ -429,20 +458,8 @@
                 <ScalarProperty Name="service_price" ColumnName="service_price" />
                 <ScalarProperty Name="service_image" ColumnName="service_image" />
                 <ScalarProperty Name="service_status" ColumnName="service_status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_get_service_by_id" FunctionName="servicesphereModel.Store.sp_get_service_by_id">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_service_by_id_Result">
-                <ScalarProperty Name="service_id" ColumnName="service_id" />
-                <ScalarProperty Name="provider_regid" ColumnName="provider_regid" />
-                <ScalarProperty Name="category_id" ColumnName="category_id" />
-                <ScalarProperty Name="service_name" ColumnName="service_name" />
-                <ScalarProperty Name="service_description" ColumnName="service_description" />
-                <ScalarProperty Name="service_price" ColumnName="service_price" />
-                <ScalarProperty Name="service_image" ColumnName="service_image" />
-                <ScalarProperty Name="service_status" ColumnName="service_status" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

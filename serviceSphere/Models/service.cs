@@ -23,7 +23,7 @@ namespace serviceSphere.Models
         public string service_image { get; set; }
 
         public string service_status { get; set; }
-
+        public string location { get; set; }
 
         // FILE UPLOAD
 

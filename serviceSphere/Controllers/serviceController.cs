@@ -84,7 +84,8 @@ namespace serviceSphere.Controllers
                     clsobj.service_description,
                     clsobj.service_price,
                     clsobj.service_image,
-                    "Available");
+                    "Available",
+                      clsobj.location);
                 clsobj.msg = "sucessfully inserted";
                 return View("service_pageload", clsobj);
             }

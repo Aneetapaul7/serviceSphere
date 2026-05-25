@@ -22,5 +22,7 @@ namespace serviceSphere
         public int service_price { get; set; }
         public string service_image { get; set; }
         public string service_status { get; set; }
+        public string location { get; set; }
+        public Nullable<decimal> rating { get; set; }
     }
 }
