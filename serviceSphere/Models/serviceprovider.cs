@@ -24,6 +24,8 @@ namespace serviceSphere.Models
         public string pass { get; set; }
         [Compare("pass", ErrorMessage = "password mismatch")]
         public string cpassword { get; set; }
+
+       
         public string msg { get; set; }
     }
 }

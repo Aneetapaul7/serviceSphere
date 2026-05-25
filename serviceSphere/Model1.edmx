@@ -133,6 +133,7 @@
           <Parameter Name="service_price" Type="int" Mode="In" />
           <Parameter Name="service_image" Type="varchar" Mode="In" />
           <Parameter Name="service_status" Type="varchar" Mode="In" />
+          <Parameter Name="location" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_userregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userid" Type="int" Mode="In" />
@@ -293,6 +294,7 @@
             <Parameter Name="service_price" Mode="In" Type="Int32" />
             <Parameter Name="service_image" Mode="In" Type="String" />
             <Parameter Name="service_status" Mode="In" Type="String" />
+            <Parameter Name="location" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_userregister">
             <Parameter Name="userid" Mode="In" Type="Int32" />

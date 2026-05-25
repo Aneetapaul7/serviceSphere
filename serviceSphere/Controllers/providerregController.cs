@@ -32,7 +32,7 @@ namespace serviceSphere.Controllers
                     regid = mid + 1;
                 }
 
-                dbobj.sp_providersregister(regid, clsobj.name, clsobj.address, clsobj.email, clsobj.phone, "approved");
+                dbobj.sp_providersregister(regid, clsobj.name, clsobj.address, clsobj.email, clsobj.phone, "pending");
                 dbobj.sp_logininsert(regid, clsobj.username, clsobj.pass, "serviceprovider");
                 clsobj.msg = "sucessfully inserted";
                 return View("provider_pageload", clsobj);

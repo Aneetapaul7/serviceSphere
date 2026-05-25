@@ -47,7 +47,7 @@ namespace serviceSphere.Controllers
 
 
                 // IMAGE UPLOAD
-
+                string img = clsobj.service_image;
                 if (clsobj.file != null && clsobj.file.ContentLength > 0)
                 {
                     string fname = Path.GetFileName(clsobj.file.FileName);
@@ -73,7 +73,7 @@ namespace serviceSphere.Controllers
 
                     // SAVE IMAGE NAME TO DATABASE
 
-                    clsobj.service_image = fname;
+                    img= fname;
                 }
 
 
@@ -83,7 +83,7 @@ namespace serviceSphere.Controllers
                     clsobj.service_name,
                     clsobj.service_description,
                     clsobj.service_price,
-                    clsobj.service_image,
+                    img,
                     "Available",
                       clsobj.location);
                 clsobj.msg = "sucessfully inserted";
@@ -117,6 +117,34 @@ namespace serviceSphere.Controllers
             return RedirectToAction("viewservice");
         }
 
+        public ActionResult edit_service(int id)
+        {
+            var data = dbobj.sp_get_service_by_id(id).FirstOrDefault();
 
+            return View(data);
+        }
+
+        [HttpPost]
+        public ActionResult edit_service_click(service clsobj)
+        {
+            if (ModelState.IsValid)
+            {
+                dbobj.sp_update_service(
+                    clsobj.service_id,
+                    clsobj.category_id,
+                    clsobj.service_name,
+                    clsobj.service_description,
+                    clsobj.service_price,
+                    clsobj.service_image,
+                    clsobj.service_status,
+                    clsobj.location
+                );
+
+                return RedirectToAction("viewservice");
+              
+            }
+
+            return View(clsobj);
+        }
     }
 }

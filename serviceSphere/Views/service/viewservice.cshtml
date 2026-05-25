@@ -1,0 +1,45 @@
+﻿@model IEnumerable<serviceSphere.sp_view_provider_services_Result>
+
+@{
+    ViewBag.Title = "My Services";
+    Layout = "~/Views/Shared/_ProviderLayout.cshtml";
+}
+
+<h2>My Services</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Location</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.service_name</td>
+            <td>@item.category_id</td>
+            <td>@item.service_price</td>
+            <td>@item.location</td>
+
+            <td>
+                <img src="~/photos/@item.service_image"
+                     width="80" height="60" />
+            </td>
+
+            <td>@item.service_status</td>
+
+            <td>
+                @Html.ActionLink("Edit", "edit_service", new { id = item.service_id }) |
+                @Html.ActionLink("Delete", "delete_service", new { id = item.service_id },
+                new { onclick = "return confirm('Are you sure?')" })
+            </td>
+        </tr>
+    }
+
+</table>

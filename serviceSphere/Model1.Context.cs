@@ -227,7 +227,7 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_providersregister", providerregidParameter, bussinessnameParameter, addressParameter, emailParameter, phoneParameter, isapprovedParameter);
         }
     
-        public virtual int sp_update_service(Nullable<int> service_id, Nullable<int> category_id, string service_name, string service_description, Nullable<int> service_price, string service_image, string service_status)
+        public virtual int sp_update_service(Nullable<int> service_id, Nullable<int> category_id, string service_name, string service_description, Nullable<int> service_price, string service_image, string service_status, string location)
         {
             var service_idParameter = service_id.HasValue ?
                 new ObjectParameter("service_id", service_id) :
@@ -257,7 +257,11 @@ namespace serviceSphere
                 new ObjectParameter("service_status", service_status) :
                 new ObjectParameter("service_status", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_update_service", service_idParameter, category_idParameter, service_nameParameter, service_descriptionParameter, service_priceParameter, service_imageParameter, service_statusParameter);
+            var locationParameter = location != null ?
+                new ObjectParameter("location", location) :
+                new ObjectParameter("location", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_update_service", service_idParameter, category_idParameter, service_nameParameter, service_descriptionParameter, service_priceParameter, service_imageParameter, service_statusParameter, locationParameter);
         }
     
         public virtual int sp_userregister(Nullable<int> userid, string username, string photo, string address, string email, string status)

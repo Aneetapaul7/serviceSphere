@@ -252,6 +252,8 @@
     <Content Include="Views\category\category_pageload.cshtml" />
     <Content Include="Views\Shared\_ProviderLayout.cshtml" />
     <Content Include="Views\service\service_pageload.cshtml" />
+    <Content Include="Views\service\viewservice.cshtml" />
+    <Content Include="Views\service\edit_service.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
