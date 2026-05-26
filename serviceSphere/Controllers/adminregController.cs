@@ -84,5 +84,35 @@ namespace serviceSphere.Controllers
 
 
 
+        public ActionResult manage_users()
+        {
+            var active_users = dbobj.sp_get_active_users().ToList();
+
+            var blocked_users = dbobj.sp_get_blocked_users().ToList();
+
+            ViewBag.active = active_users;
+
+            ViewBag.blocked = blocked_users;
+
+            return View();
+        }
+
+
+        public ActionResult block_user(int id)
+        {
+            dbobj.sp_block_user(id);
+
+            return RedirectToAction("manage_users");
+        }
+
+
+        public ActionResult unblock_user(int id)
+        {
+            dbobj.sp_unblock_user(id);
+
+            return RedirectToAction("manage_users");
+        }
+
+
     }
 }

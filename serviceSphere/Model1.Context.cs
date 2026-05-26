@@ -357,5 +357,38 @@ namespace serviceSphere
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_services_Result>("sp_get_all_services");
         }
+    
+        public virtual int sp_block_user(Nullable<int> user_id)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_block_user", user_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_get_all_users_Result> sp_get_all_users()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_users_Result>("sp_get_all_users");
+        }
+    
+        public virtual int sp_unblock_user(Nullable<int> user_id)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_unblock_user", user_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_get_active_users_Result> sp_get_active_users()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_active_users_Result>("sp_get_active_users");
+        }
+    
+        public virtual ObjectResult<sp_get_blocked_users_Result> sp_get_blocked_users()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_blocked_users_Result>("sp_get_blocked_users");
+        }
     }
 }

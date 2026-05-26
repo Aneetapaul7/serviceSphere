@@ -81,6 +81,9 @@
         <Function Name="sp_block_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="provider_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_block_user" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_category_delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="cat_id" Type="int" Mode="In" />
         </Function>
@@ -94,9 +97,12 @@
         <Function Name="sp_delete_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_get_active_users" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_all_services" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_get_all_users" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_approved_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_blocked_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_get_blocked_users" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_pending_providers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_get_service_by_id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
@@ -140,6 +146,9 @@
         </Function>
         <Function Name="sp_unblock_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_unblock_user" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_update_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
@@ -338,6 +347,15 @@
           <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_get_all_services" ReturnType="Collection(servicesphereModel.sp_get_all_services_Result)" />
+          <FunctionImport Name="sp_block_user">
+          <Parameter Name="user_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_get_all_users" ReturnType="Collection(servicesphereModel.sp_get_all_users_Result)" />
+          <FunctionImport Name="sp_unblock_user">
+          <Parameter Name="user_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_get_active_users" ReturnType="Collection(servicesphereModel.sp_get_active_users_Result)" />
+          <FunctionImport Name="sp_get_blocked_users" ReturnType="Collection(servicesphereModel.sp_get_blocked_users_Result)" />
         </EntityContainer>
         <ComplexType Name="sp_category_select_Result">
           <Property Type="Int32" Name="catid" Nullable="false" />
@@ -405,6 +423,30 @@
           <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
+        </ComplexType>
+        <ComplexType Name="sp_get_all_users_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_active_users_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_blocked_users_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -591,6 +633,44 @@
                 <ScalarProperty Name="service_status" ColumnName="service_status" />
                 <ScalarProperty Name="location" ColumnName="location" />
                 <ScalarProperty Name="rating" ColumnName="rating" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_block_user" FunctionName="servicesphereModel.Store.sp_block_user" />
+          <FunctionImportMapping FunctionImportName="sp_get_all_users" FunctionName="servicesphereModel.Store.sp_get_all_users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_all_users_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_unblock_user" FunctionName="servicesphereModel.Store.sp_unblock_user" />
+          <FunctionImportMapping FunctionImportName="sp_get_active_users" FunctionName="servicesphereModel.Store.sp_get_active_users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_active_users_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_blocked_users" FunctionName="servicesphereModel.Store.sp_get_blocked_users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_blocked_users_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="status" ColumnName="status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

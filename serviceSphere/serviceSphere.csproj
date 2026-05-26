@@ -178,13 +178,22 @@
     <Compile Include="sp_category_select_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_get_active_users_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_get_all_services_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_get_all_users_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_get_approved_providers_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_get_blocked_providers_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_get_blocked_users_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_get_pending_providers_Result.cs">
@@ -267,6 +276,7 @@
     <Content Include="Views\service\viewservice.cshtml" />
     <Content Include="Views\service\edit_service.cshtml" />
     <Content Include="Views\adminreg\viewproviders.cshtml" />
+    <Content Include="Views\adminreg\manage_users.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "manage_users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>manage_users</h2>
+
+
+<!-- ACTIVE USERS -->
+
+<div class="card mb-5">
+    <div class="card-header bg-success text-white">
+        <h4>Active Users</h4>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-striped">
+
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in ViewBag.active)
+            {
+                <tr>
+
+                    <td>@item.user_name</td>
+                    <td>@item.address</td>
+
+                    <td>@item.email</td>
+
+                    <td>@item.phone</td>
+
+
+
+                    <td>
+                        <a href="@Url.Action("block_user","Adminreg",new { id=item.user_id })"
+                           class="btn btn-danger">
+                            Block
+                        </a>
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+
+    </div>
+</div>
+
+<!-- BLOCKED USERS -->
+
+<div class="card">
+
+    <div class="card-header bg-danger text-white">
+        <h4>Blocked Users</h4>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-striped">
+
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in ViewBag.blocked)
+            {
+        <tr>
+
+            <td>@item.user_name</td>
+            <td>@item.address</td>
+
+            <td>@item.email</td>
+
+            <td>@item.phone</td>
+
+
+
+            <td>
+                <a href="@Url.Action("unblock_user","Adminreg",new { id=item.user_id })"
+                   class="btn btn-success">
+                    Unblock
+                </a>
+            </td>
+
+        </tr>            }
+
+        </table>
+
+    </div>
+
+</div>
