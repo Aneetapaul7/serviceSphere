@@ -7,16 +7,13 @@ using serviceSphere.Models;
 
 namespace serviceSphere.Controllers
 {   
- 
     public class userregController : Controller
     {
         servicesphereEntities dbobj = new servicesphereEntities();
-        // GET: userreg
         public ActionResult userreg_pageload()
         {
             return View();
         }
-
         public ActionResult userreg_click(userinsert clsobj)
         {
             if (ModelState.IsValid)
@@ -32,7 +29,6 @@ namespace serviceSphere.Controllers
                 {
                     regid = mid + 1;
                 }
-
                 dbobj.sp_userregister(regid, clsobj.name, clsobj.address,clsobj.phone, clsobj.email, "active");
                 dbobj.sp_logininsert(regid, clsobj.username, clsobj.pass, "user");
                 clsobj.usermsg = "sucessfully inserted";

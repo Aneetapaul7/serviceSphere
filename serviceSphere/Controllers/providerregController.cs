@@ -10,12 +10,10 @@ namespace serviceSphere.Controllers
     public class providerregController : Controller
     {
         servicesphereEntities dbobj = new servicesphereEntities();
-        // GET: providerreg
         public ActionResult provider_pageload()
         {
             return View();
         }
-
         public ActionResult provider_click(serviceprovider clsobj)
         {
             if (ModelState.IsValid)
@@ -31,7 +29,6 @@ namespace serviceSphere.Controllers
                 {
                     regid = mid + 1;
                 }
-
                 dbobj.sp_providersregister(regid, clsobj.name, clsobj.address, clsobj.email, clsobj.phone, "pending");
                 dbobj.sp_logininsert(regid, clsobj.username, clsobj.pass, "serviceprovider");
                 clsobj.msg = "sucessfully inserted";

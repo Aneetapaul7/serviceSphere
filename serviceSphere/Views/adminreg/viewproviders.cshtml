@@ -1,101 +1,182 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "viewproviders";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Pending Providers</h2>
+<style>
+    body {
+        background: #f5f7fb;
+    }
 
-<table border="1">
+    .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 25px;
+    }
 
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Action</th>
-    </tr>
+    .table-box {
+        background: #ffffff;
+        padding: 22px;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        margin-bottom: 35px;
+    }
 
-    @foreach (var item in ViewBag.pending)
-    {
-<tr>
+    .section-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 18px;
+    }
 
-    <td>@item.bussiness_name</td>
-    <td>@item.email</td>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-    <td>
+        .custom-table th {
+            background: #111827;
+            color: #ffffff;
+            padding: 14px;
+            text-align: left;
+            font-size: 14px;
+        }
 
-        @Html.ActionLink(
-        "Approve",
-        "approve_provider",
-        new { id = item.provider_id })
+        .custom-table td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #374151;
+        }
 
-    </td>
+        .custom-table tr:hover {
+            background: #f9fafb;
+        }
 
-</tr>}
+    .action-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+    }
 
-</table>
+    .approve-btn {
+        background: #16a34a;
+    }
 
-<br />
-<br />
+    .block-btn {
+        background: #dc2626;
+    }
 
-<h2>Approved Providers</h2>
+    .unblock-btn {
+        background: #2563eb;
+    }
+</style>
 
-<table border="1">
+<h2 class="page-title">Service Providers Management</h2>
 
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Action</th>
-    </tr>
+<div class="table-box">
 
-    @foreach (var item in ViewBag.approved)
-    {
-<tr>
+    <h3 class="section-title">Pending Providers</h3>
 
-    <td>@item.bussiness_name</td>
-    <td>@item.email</td>
+    <table class="custom-table">
 
-    <td>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
 
-        @Html.ActionLink(
-        "Block",
-        "block_provider",
-        new { id = item.provider_id })
+        @foreach (var item in ViewBag.pending)
+        {
+            <tr>
 
-    </td>
+                <td>@item.bussiness_name</td>
+                <td>@item.email</td>
 
-</tr>}
+                <td>
+                    @Html.ActionLink(
+                    "Approve",
+                    "approve_provider",
+                    new { id = item.provider_id },
+                    new { @class = "action-btn approve-btn" })
+                </td>
 
-</table>
+            </tr>
+        }
 
-<br />
-<br />
+    </table>
 
-<h2>Blocked Providers</h2>
+</div>
 
-<table border="1">
+<div class="table-box">
 
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Action</th>
-    </tr>
+    <h3 class="section-title">Approved Providers</h3>
 
-    @foreach (var item in ViewBag.blocked)
-    {
-<tr>
+    <table class="custom-table">
 
-    <td>@item.bussiness_name</td>
-    <td>@item.email</td>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
 
-    <td>
+        @foreach (var item in ViewBag.approved)
+        {
+            <tr>
 
-        @Html.ActionLink(
-        "Unblock",
-        "unblock_provider",
-        new { id = item.provider_id })
+                <td>@item.bussiness_name</td>
+                <td>@item.email</td>
 
-    </td>
+                <td>
+                    @Html.ActionLink(
+                    "Block",
+                    "block_provider",
+                    new { id = item.provider_id },
+                    new { @class = "action-btn block-btn" })
+                </td>
 
-</tr>}
+            </tr>
+        }
 
-</table>
+    </table>
+
+</div>
+
+<div class="table-box">
+
+    <h3 class="section-title">Blocked Providers</h3>
+
+    <table class="custom-table">
+
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in ViewBag.blocked)
+        {
+            <tr>
+
+                <td>@item.bussiness_name</td>
+                <td>@item.email</td>
+
+                <td>
+                    @Html.ActionLink(
+                    "Unblock",
+                    "unblock_provider",
+                    new { id = item.provider_id },
+                    new { @class = "action-btn unblock-btn" })
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+</div>

@@ -10,13 +10,11 @@ namespace serviceSphere.Controllers
     public class categoryController : Controller
     {
         servicesphereEntities dbobj = new servicesphereEntities();
-        // GET: category
         public ActionResult category_pageload()
         {
             ViewBag.categorylist = dbobj.sp_category_select().ToList();
             return View();
         }
-
         public ActionResult category_clickinsert(category clsobj)
         {
             if (ModelState.IsValid) { 
@@ -28,13 +26,11 @@ namespace serviceSphere.Controllers
             ViewBag.categorylist = dbobj.sp_category_select().ToList();
             return View("category_pageload", clsobj);
         }
-
         public ActionResult category_delete(int id)
         {
             dbobj.sp_category_delete(id);
 
             return RedirectToAction("category_pageload");
         }
-
     }
 }

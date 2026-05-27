@@ -10,12 +10,10 @@ namespace serviceSphere.Controllers
     public class adminregController : Controller
     {
         servicesphereEntities dbobj = new servicesphereEntities();
-        // GET: adminreg
         public ActionResult insertadmin_pageload()
         {
             return View();
         }
-
         public ActionResult insertadmin_click(admininsert clsobj)
         {
             if (ModelState.IsValid)
@@ -31,16 +29,12 @@ namespace serviceSphere.Controllers
                 {
                     regid = mid + 1;
                 }
-
                 dbobj.sp_adminregister(regid, clsobj.name, clsobj.email, clsobj.phone);
                 dbobj.sp_logininsert(regid, clsobj.username, clsobj.pass,"admin");
                 clsobj.adminmsg = "sucessfully inserted";
                 return View("insertadmin_pageload", clsobj);
-
-
             }
             return View("insertadmin_pageload", clsobj);
-
         }
 
         public ActionResult viewproviders()
@@ -56,18 +50,12 @@ namespace serviceSphere.Controllers
 
             return View();
         }
-
-
-
-
         public ActionResult approve_provider(int id)
         {
             dbobj.sp_approve_provider(id);
 
             return RedirectToAction("viewproviders");
         }
-
-
         public ActionResult block_provider(int id)
         {
             dbobj.sp_block_provider(id);
@@ -96,23 +84,17 @@ namespace serviceSphere.Controllers
 
             return View();
         }
-
-
         public ActionResult block_user(int id)
         {
             dbobj.sp_block_user(id);
 
             return RedirectToAction("manage_users");
         }
-
-
         public ActionResult unblock_user(int id)
         {
             dbobj.sp_unblock_user(id);
 
             return RedirectToAction("manage_users");
         }
-
-
     }
 }

@@ -10,33 +10,10 @@ namespace serviceSphere.Controllers
     public class loginController : Controller
     {
         servicesphereEntities dbobj = new servicesphereEntities();
-        // GET: login
         public ActionResult login_pageload()
         {
             return View();
         }
-
-
-        public ActionResult home()
-        {
-            var services = dbobj.sp_get_all_services().ToList();
-
-            return View(services);
-        }
-
-
-        public ActionResult adminhome()
-        {
-            return View();
-        }
-
-        public ActionResult providerhome()
-        {
-            return View();
-        }
-
-
-
         public ActionResult login_click(login clsobj)
         {
             if (ModelState.IsValid)
@@ -59,9 +36,7 @@ namespace serviceSphere.Controllers
                     }
                     else if (lt == "serviceprovider")
                     {
-                        var status = dbobj.sp_check_provider_status(uid)
-                                          .FirstOrDefault();
-
+                        var status = dbobj.sp_check_provider_status(uid).FirstOrDefault();
                         if (status == "pending")
                         {
                             ModelState.Clear();
@@ -91,16 +66,25 @@ namespace serviceSphere.Controllers
                     return View("login_pageload", clsobj);
                 }
             }
-
             else
             {
                 ModelState.Clear();
                 clsobj.msg = "invalid login";
             }
-
             return View("login_pageload", clsobj);
         }
-
-       
+        public ActionResult home()
+        {
+            var services = dbobj.sp_get_all_services().ToList();
+            return View(services);
+        }
+        public ActionResult adminhome()
+        {
+            return View();
+        }
+        public ActionResult providerhome()
+        {
+            return View();
+        }
     }
 }

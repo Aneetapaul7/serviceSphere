@@ -10,18 +10,16 @@
 namespace serviceSphere
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_get_all_services_Result
+    public partial class reviewtab
     {
+        public int review_id { get; set; }
+        public int booking_id { get; set; }
+        public int user_id { get; set; }
+        public int provider_id { get; set; }
         public int service_id { get; set; }
-        public string service_name { get; set; }
-        public string service_description { get; set; }
-        public int service_price { get; set; }
-        public string service_image { get; set; }
-        public string location { get; set; }
-        public int provider_regid { get; set; }
-        public Nullable<decimal> rating { get; set; }
-        public string catname { get; set; }
-        public string bussiness_name { get; set; }
+        public int rating { get; set; }
+        public string review_msg { get; set; }
     }
 }

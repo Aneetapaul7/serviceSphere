@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "home", "login", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("ServiceSphere", "home", "login", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
 
@@ -61,15 +61,15 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="body-content">
         @RenderBody()
         <hr />
 
     </div>
 
-    <footer class="footer">
+    @*<footer class="footer">
         <p>&copy; @DateTime.Now.Year - ServiceSphere</p>
-    </footer>
+    </footer>*@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

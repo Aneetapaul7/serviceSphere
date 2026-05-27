@@ -1,70 +1,139 @@
 ﻿@model serviceSphere.Models.admininsert
+
 @{
-    ViewBag.Title = "insertadmin_pageload";
+    ViewBag.Title = "Admin Registration";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Admin registration</h2>
-<div>
+<style>
+    .register-box {
+        width: 390px;
+        margin: 30px auto;
+        padding: 25px;
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        border: 1px solid #f1f1f1;
+    }
+
+    .form-control {
+        width: 100%;
+        height: 48px;
+        padding: 12px 15px;
+        border: 1px solid #dcdfe4;
+        border-radius: 12px;
+        font-size: 14px;
+        background: #fafafa;
+        box-sizing: border-box;
+    }
+    
+
+    .register-btn {
+        width: 100%;
+        height: 48px;
+        border: none;
+        border-radius: 12px;
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+     
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #444;
+        }
+
+
+        .form-control:focus {
+            border-color: #111;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+            outline: none;
+        }
+
+    .text-danger {
+        color: #e53935;
+        font-size: 13px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .register-title {
+        text-align: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 22px;
+    }
+
+    .success-msg {
+        text-align: center;
+        margin-top: 15px;
+        font-weight: 600;
+        color: green;
+    }
+</style>
+
+<div class="register-box">
+
+    <div class="register-title">
+        Admin Registration
+    </div>
+
     @using (Html.BeginForm("insertadmin_click", "adminreg", FormMethod.Post))
     {
-        <div>
-            <label>Name:</label>
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.name)
-            @Html.ValidationMessageFor(m => m.name)
+        <div class="form-group">
+            <label>Full Name</label>
+            @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = "Enter full name" })
+            @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
         </div>
 
-        <div>
-            <label>email:</label>
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.email)
-            @Html.ValidationMessageFor(m => m.email)
+        <div class="form-group">
+            <label>Email Address</label>
+            @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Enter email address" })
+            @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
         </div>
 
-
-        <div>
-            <label>phone:</label>
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.phone)
-            @Html.ValidationMessageFor(m => m.phone)
+        <div class="form-group">
+            <label>Phone Number</label>
+            @Html.TextBoxFor(m => m.phone, new { @class = "form-control", placeholder = "Enter phone number" })
+            @Html.ValidationMessageFor(m => m.phone, "", new { @class = "text-danger" })
         </div>
 
-
-        <div>
-            <label>username:</label>
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.username)
-            @Html.ValidationMessageFor(m => m.username)
+        <div class="form-group">
+            <label>Username</label>
+            @Html.TextBoxFor(m => m.username, new { @class = "form-control", placeholder = "Create username" })
+            @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
         </div>
 
-
-
-        <div>
-            <label>password:</label>
-        </div>
-        <div>
-            @Html.PasswordFor(m => m.pass)
+        <div class="form-group">
+            <label>Password</label>
+            @Html.PasswordFor(m => m.pass, new { @class = "form-control", placeholder = "Enter password" })
         </div>
 
-
-        <div>
-            <label>confirm password:</label>
-        </div>
-        <div>
-            @Html.PasswordFor(m=>m.cpassword)
-            @Html.ValidationMessageFor(m=>m.cpassword)
+        <div class="form-group">
+            <label>Confirm Password</label>
+            @Html.PasswordFor(m => m.cpassword, new { @class = "form-control", placeholder = "Confirm password" })
+            @Html.ValidationMessageFor(m => m.cpassword, "", new { @class = "text-danger" })
         </div>
 
-        <div>
-            <input type="submit" value="insert"/>
-            @Html.DisplayFor(m=>m.adminmsg)
-        </div>
+        <button type="submit" class="register-btn">
+            Create Admin Account
+        </button>
 
+        <div class="success-msg">
+            @Html.DisplayFor(m => m.adminmsg)
+        </div>
     }
-</div>
 
+</div>

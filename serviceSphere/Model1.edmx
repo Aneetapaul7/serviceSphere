@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="servicesphereModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="admintab">
           <Key>
             <PropertyRef Name="admin_id" />
@@ -13,6 +13,24 @@
           <Property Name="admin_name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="admin_email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="admin_phone" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="bookingtab">
+          <Key>
+            <PropertyRef Name="booking_id" />
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="provider_id" />
+            <PropertyRef Name="service_id" />
+            <PropertyRef Name="booking_date" />
+            <PropertyRef Name="booking_status" />
+          </Key>
+          <Property Name="booking_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="provider_id" Type="int" Nullable="false" />
+          <Property Name="service_id" Type="int" Nullable="false" />
+          <Property Name="booking_date" Type="date" Nullable="false" />
+          <Property Name="booking_status" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="categorytab">
           <Key>
@@ -42,6 +60,18 @@
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phone" Type="bigint" Nullable="false" />
           <Property Name="is_approve" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reviewtab">
+          <Key>
+            <PropertyRef Name="review_id" />
+          </Key>
+          <Property Name="review_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="booking_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="provider_id" Type="int" Nullable="false" />
+          <Property Name="service_id" Type="int" Nullable="false" />
+          <Property Name="rating" Type="int" Nullable="false" />
+          <Property Name="review_msg" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="servicetab">
           <Key>
@@ -176,10 +206,22 @@
           <EntitySet Name="categorytab" EntityType="Self.categorytab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="logintab" EntityType="Self.logintab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="providertab" EntityType="Self.providertab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reviewtab" EntityType="Self.reviewtab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="servicetab" EntityType="Self.servicetab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertab" EntityType="Self.usertab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bookingtab" EntityType="Self.bookingtab" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [bookingtab].[booking_id] AS [booking_id], 
+    [bookingtab].[user_id] AS [user_id], 
+    [bookingtab].[provider_id] AS [provider_id], 
+    [bookingtab].[service_id] AS [service_id], 
+    [bookingtab].[booking_date] AS [booking_date], 
+    [bookingtab].[booking_status] AS [booking_status]
+    FROM [dbo].[bookingtab] AS [bookingtab]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="servicesphereModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -221,6 +263,18 @@
           <Property Name="phone" Type="Int64" Nullable="false" />
           <Property Name="is_approve" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
+        <EntityType Name="reviewtab">
+          <Key>
+            <PropertyRef Name="review_id" />
+          </Key>
+          <Property Name="review_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="booking_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="provider_id" Type="Int32" Nullable="false" />
+          <Property Name="service_id" Type="Int32" Nullable="false" />
+          <Property Name="rating" Type="Int32" Nullable="false" />
+          <Property Name="review_msg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityType Name="servicetab">
           <Key>
             <PropertyRef Name="service_id" />
@@ -247,13 +301,31 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
+        <EntityType Name="bookingtab">
+          <Key>
+            <PropertyRef Name="booking_id" />
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="provider_id" />
+            <PropertyRef Name="service_id" />
+            <PropertyRef Name="booking_date" />
+            <PropertyRef Name="booking_status" />
+          </Key>
+          <Property Name="booking_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="provider_id" Type="Int32" Nullable="false" />
+          <Property Name="service_id" Type="Int32" Nullable="false" />
+          <Property Name="booking_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="booking_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="servicesphereEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="admintabs" EntityType="Self.admintab" />
           <EntitySet Name="categorytabs" EntityType="Self.categorytab" />
           <EntitySet Name="logintabs" EntityType="Self.logintab" />
           <EntitySet Name="providertabs" EntityType="Self.providertab" />
+          <EntitySet Name="reviewtabs" EntityType="Self.reviewtab" />
           <EntitySet Name="servicetabs" EntityType="Self.servicetab" />
           <EntitySet Name="usertabs" EntityType="Self.usertab" />
+          <EntitySet Name="bookingtabs" EntityType="Self.bookingtab" />
           <FunctionImport Name="sp_adminregister">
             <Parameter Name="adminid" Mode="In" Type="Int32" />
             <Parameter Name="adminname" Mode="In" Type="String" />
@@ -261,26 +333,36 @@
             <Parameter Name="phone" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="sp_approve_provider">
-          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_block_provider">
-          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_block_user">
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_category_delete">
-          <Parameter Name="cat_id" Mode="In" Type="Int32" />
+            <Parameter Name="cat_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_category_insert">
-          <Parameter Name="catname" Mode="In" Type="String" />
+            <Parameter Name="catname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_category_select" ReturnType="Collection(servicesphereModel.sp_category_select_Result)" />
-          <FunctionImport Name="sp_delete_service">
-          <Parameter Name="service_id" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_check_provider_status" ReturnType="Collection(String)">
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_delete_service">
+            <Parameter Name="service_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_get_active_users" ReturnType="Collection(servicesphereModel.sp_get_active_users_Result)" />
+          <FunctionImport Name="sp_get_all_services" ReturnType="Collection(servicesphereModel.sp_get_all_services_Result)" />
+          <FunctionImport Name="sp_get_all_users" ReturnType="Collection(servicesphereModel.sp_get_all_users_Result)" />
           <FunctionImport Name="sp_get_approved_providers" ReturnType="Collection(servicesphereModel.sp_get_approved_providers_Result)" />
           <FunctionImport Name="sp_get_blocked_providers" ReturnType="Collection(servicesphereModel.sp_get_blocked_providers_Result)" />
+          <FunctionImport Name="sp_get_blocked_users" ReturnType="Collection(servicesphereModel.sp_get_blocked_users_Result)" />
           <FunctionImport Name="sp_get_pending_providers" ReturnType="Collection(servicesphereModel.sp_get_pending_providers_Result)" />
           <FunctionImport Name="sp_get_service_by_id" ReturnType="Collection(servicesphereModel.sp_get_service_by_id_Result)">
-          <Parameter Name="service_id" Mode="In" Type="Int32" />
+            <Parameter Name="service_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_insert_service">
             <Parameter Name="provider_regid" Mode="In" Type="Int32" />
@@ -320,7 +402,10 @@
             <Parameter Name="isapproved" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_unblock_provider">
-          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_unblock_user">
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_update_service">
             <Parameter Name="service_id" Mode="In" Type="Int32" />
@@ -341,25 +426,40 @@
             <Parameter Name="status" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_view_provider_services" ReturnType="Collection(servicesphereModel.sp_view_provider_services_Result)">
-          <Parameter Name="provider_id" Mode="In" Type="Int32" />
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_check_provider_status" ReturnType="Collection(String)">
-          <Parameter Name="provider_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_get_all_services" ReturnType="Collection(servicesphereModel.sp_get_all_services_Result)" />
-          <FunctionImport Name="sp_block_user">
-          <Parameter Name="user_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_get_all_users" ReturnType="Collection(servicesphereModel.sp_get_all_users_Result)" />
-          <FunctionImport Name="sp_unblock_user">
-          <Parameter Name="user_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_get_active_users" ReturnType="Collection(servicesphereModel.sp_get_active_users_Result)" />
-          <FunctionImport Name="sp_get_blocked_users" ReturnType="Collection(servicesphereModel.sp_get_blocked_users_Result)" />
         </EntityContainer>
         <ComplexType Name="sp_category_select_Result">
           <Property Type="Int32" Name="catid" Nullable="false" />
           <Property Type="String" Name="catname" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_active_users_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_all_services_Result">
+          <Property Type="Int32" Name="service_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="service_description" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="service_price" Nullable="false" />
+          <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="provider_regid" Nullable="false" />
+          <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
+          <Property Type="String" Name="catname" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="bussiness_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_all_users_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="sp_get_approved_providers_Result">
           <Property Type="Int32" Name="provider_id" Nullable="false" />
@@ -378,6 +478,14 @@
           <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
           <Property Type="Int64" Name="phone" Nullable="false" />
           <Property Type="String" Name="is_approve" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_get_blocked_users_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="phone" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="sp_get_pending_providers_Result">
           <Property Type="Int32" Name="provider_id" Nullable="false" />
@@ -411,42 +519,6 @@
           <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
-        </ComplexType>
-        <ComplexType Name="sp_get_all_services_Result">
-          <Property Type="Int32" Name="service_id" Nullable="false" />
-          <Property Type="Int32" Name="provider_regid" Nullable="false" />
-          <Property Type="Int32" Name="category_id" Nullable="false" />
-          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="service_description" Nullable="false" MaxLength="500" />
-          <Property Type="Int32" Name="service_price" Nullable="false" />
-          <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
-          <Property Type="String" Name="service_status" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
-          <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
-        </ComplexType>
-        <ComplexType Name="sp_get_all_users_Result">
-          <Property Type="Int32" Name="user_id" Nullable="false" />
-          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
-          <Property Type="Int64" Name="phone" Nullable="false" />
-          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="sp_get_active_users_Result">
-          <Property Type="Int32" Name="user_id" Nullable="false" />
-          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
-          <Property Type="Int64" Name="phone" Nullable="false" />
-          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="sp_get_blocked_users_Result">
-          <Property Type="Int32" Name="user_id" Nullable="false" />
-          <Property Type="String" Name="user_name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="address" Nullable="false" MaxLength="50" />
-          <Property Type="Int64" Name="phone" Nullable="false" />
-          <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="status" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -496,6 +568,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="reviewtabs">
+            <EntityTypeMapping TypeName="servicesphereModel.reviewtab">
+              <MappingFragment StoreEntitySet="reviewtab">
+                <ScalarProperty Name="review_id" ColumnName="review_id" />
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="review_msg" ColumnName="review_msg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="servicetabs">
             <EntityTypeMapping TypeName="servicesphereModel.servicetab">
               <MappingFragment StoreEntitySet="servicetab">
@@ -524,9 +609,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="bookingtabs">
+            <EntityTypeMapping TypeName="servicesphereModel.bookingtab">
+              <MappingFragment StoreEntitySet="bookingtab">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+                <ScalarProperty Name="booking_status" ColumnName="booking_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_adminregister" FunctionName="servicesphereModel.Store.sp_adminregister" />
           <FunctionImportMapping FunctionImportName="sp_approve_provider" FunctionName="servicesphereModel.Store.sp_approve_provider" />
           <FunctionImportMapping FunctionImportName="sp_block_provider" FunctionName="servicesphereModel.Store.sp_block_provider" />
+          <FunctionImportMapping FunctionImportName="sp_block_user" FunctionName="servicesphereModel.Store.sp_block_user" />
           <FunctionImportMapping FunctionImportName="sp_category_delete" FunctionName="servicesphereModel.Store.sp_category_delete" />
           <FunctionImportMapping FunctionImportName="sp_category_insert" FunctionName="servicesphereModel.Store.sp_category_insert" />
           <FunctionImportMapping FunctionImportName="sp_category_select" FunctionName="servicesphereModel.Store.sp_category_select">
@@ -537,7 +635,48 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_check_provider_status" FunctionName="servicesphereModel.Store.sp_check_provider_status" />
           <FunctionImportMapping FunctionImportName="sp_delete_service" FunctionName="servicesphereModel.Store.sp_delete_service" />
+          <FunctionImportMapping FunctionImportName="sp_get_active_users" FunctionName="servicesphereModel.Store.sp_get_active_users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_active_users_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_all_services" FunctionName="servicesphereModel.Store.sp_get_all_services">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_all_services_Result">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_description" ColumnName="service_description" />
+                <ScalarProperty Name="service_price" ColumnName="service_price" />
+                <ScalarProperty Name="service_image" ColumnName="service_image" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="provider_regid" ColumnName="provider_regid" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="catname" ColumnName="catname" />
+                <ScalarProperty Name="bussiness_name" ColumnName="bussiness_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_all_users" FunctionName="servicesphereModel.Store.sp_get_all_users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_all_users_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_get_approved_providers" FunctionName="servicesphereModel.Store.sp_get_approved_providers">
             <ResultMapping>
               <ComplexTypeMapping TypeName="servicesphereModel.sp_get_approved_providers_Result">
@@ -561,6 +700,18 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="is_approve" ColumnName="is_approve" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_blocked_users" FunctionName="servicesphereModel.Store.sp_get_blocked_users">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_blocked_users_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="status" ColumnName="status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -601,6 +752,7 @@
           <FunctionImportMapping FunctionImportName="sp_maxidlogin" FunctionName="servicesphereModel.Store.sp_maxidlogin" />
           <FunctionImportMapping FunctionImportName="sp_providersregister" FunctionName="servicesphereModel.Store.sp_providersregister" />
           <FunctionImportMapping FunctionImportName="sp_unblock_provider" FunctionName="servicesphereModel.Store.sp_unblock_provider" />
+          <FunctionImportMapping FunctionImportName="sp_unblock_user" FunctionName="servicesphereModel.Store.sp_unblock_user" />
           <FunctionImportMapping FunctionImportName="sp_update_service" FunctionName="servicesphereModel.Store.sp_update_service" />
           <FunctionImportMapping FunctionImportName="sp_userregister" FunctionName="servicesphereModel.Store.sp_userregister" />
           <FunctionImportMapping FunctionImportName="sp_view_provider_services" FunctionName="servicesphereModel.Store.sp_view_provider_services">
@@ -616,61 +768,6 @@
                 <ScalarProperty Name="service_status" ColumnName="service_status" />
                 <ScalarProperty Name="location" ColumnName="location" />
                 <ScalarProperty Name="rating" ColumnName="rating" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_check_provider_status" FunctionName="servicesphereModel.Store.sp_check_provider_status" />
-          <FunctionImportMapping FunctionImportName="sp_get_all_services" FunctionName="servicesphereModel.Store.sp_get_all_services">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_all_services_Result">
-                <ScalarProperty Name="service_id" ColumnName="service_id" />
-                <ScalarProperty Name="provider_regid" ColumnName="provider_regid" />
-                <ScalarProperty Name="category_id" ColumnName="category_id" />
-                <ScalarProperty Name="service_name" ColumnName="service_name" />
-                <ScalarProperty Name="service_description" ColumnName="service_description" />
-                <ScalarProperty Name="service_price" ColumnName="service_price" />
-                <ScalarProperty Name="service_image" ColumnName="service_image" />
-                <ScalarProperty Name="service_status" ColumnName="service_status" />
-                <ScalarProperty Name="location" ColumnName="location" />
-                <ScalarProperty Name="rating" ColumnName="rating" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_block_user" FunctionName="servicesphereModel.Store.sp_block_user" />
-          <FunctionImportMapping FunctionImportName="sp_get_all_users" FunctionName="servicesphereModel.Store.sp_get_all_users">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_all_users_Result">
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="user_name" ColumnName="user_name" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="status" ColumnName="status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_unblock_user" FunctionName="servicesphereModel.Store.sp_unblock_user" />
-          <FunctionImportMapping FunctionImportName="sp_get_active_users" FunctionName="servicesphereModel.Store.sp_get_active_users">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_active_users_Result">
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="user_name" ColumnName="user_name" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="status" ColumnName="status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_get_blocked_users" FunctionName="servicesphereModel.Store.sp_get_blocked_users">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="servicesphereModel.sp_get_blocked_users_Result">
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="user_name" ColumnName="user_name" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="status" ColumnName="status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

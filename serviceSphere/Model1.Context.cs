@@ -31,8 +31,10 @@ namespace serviceSphere
         public virtual DbSet<categorytab> categorytabs { get; set; }
         public virtual DbSet<logintab> logintabs { get; set; }
         public virtual DbSet<providertab> providertabs { get; set; }
+        public virtual DbSet<reviewtab> reviewtabs { get; set; }
         public virtual DbSet<servicetab> servicetabs { get; set; }
         public virtual DbSet<usertab> usertabs { get; set; }
+        public virtual DbSet<bookingtab> bookingtabs { get; set; }
     
         public virtual int sp_adminregister(Nullable<int> adminid, string adminname, string adminemail, Nullable<long> phone)
         {
@@ -73,6 +75,15 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_block_provider", provider_idParameter);
         }
     
+        public virtual int sp_block_user(Nullable<int> user_id)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_block_user", user_idParameter);
+        }
+    
         public virtual int sp_category_delete(Nullable<int> cat_id)
         {
             var cat_idParameter = cat_id.HasValue ?
@@ -96,6 +107,15 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_category_select_Result>("sp_category_select");
         }
     
+        public virtual ObjectResult<string> sp_check_provider_status(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_check_provider_status", provider_idParameter);
+        }
+    
         public virtual int sp_delete_service(Nullable<int> service_id)
         {
             var service_idParameter = service_id.HasValue ?
@@ -103,6 +123,21 @@ namespace serviceSphere
                 new ObjectParameter("service_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_delete_service", service_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_get_active_users_Result> sp_get_active_users()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_active_users_Result>("sp_get_active_users");
+        }
+    
+        public virtual ObjectResult<sp_get_all_services_Result> sp_get_all_services()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_services_Result>("sp_get_all_services");
+        }
+    
+        public virtual ObjectResult<sp_get_all_users_Result> sp_get_all_users()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_users_Result>("sp_get_all_users");
         }
     
         public virtual ObjectResult<sp_get_approved_providers_Result> sp_get_approved_providers()
@@ -113,6 +148,11 @@ namespace serviceSphere
         public virtual ObjectResult<sp_get_blocked_providers_Result> sp_get_blocked_providers()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_blocked_providers_Result>("sp_get_blocked_providers");
+        }
+    
+        public virtual ObjectResult<sp_get_blocked_users_Result> sp_get_blocked_users()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_blocked_users_Result>("sp_get_blocked_users");
         }
     
         public virtual ObjectResult<sp_get_pending_providers_Result> sp_get_pending_providers()
@@ -269,6 +309,15 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_unblock_provider", provider_idParameter);
         }
     
+        public virtual int sp_unblock_user(Nullable<int> user_id)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_unblock_user", user_idParameter);
+        }
+    
         public virtual int sp_update_service(Nullable<int> service_id, Nullable<int> category_id, string service_name, string service_description, Nullable<int> service_price, string service_image, string service_status, string location)
         {
             var service_idParameter = service_id.HasValue ?
@@ -342,53 +391,6 @@ namespace serviceSphere
                 new ObjectParameter("provider_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_view_provider_services_Result>("sp_view_provider_services", provider_idParameter);
-        }
-    
-        public virtual ObjectResult<string> sp_check_provider_status(Nullable<int> provider_id)
-        {
-            var provider_idParameter = provider_id.HasValue ?
-                new ObjectParameter("provider_id", provider_id) :
-                new ObjectParameter("provider_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_check_provider_status", provider_idParameter);
-        }
-    
-        public virtual ObjectResult<sp_get_all_services_Result> sp_get_all_services()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_services_Result>("sp_get_all_services");
-        }
-    
-        public virtual int sp_block_user(Nullable<int> user_id)
-        {
-            var user_idParameter = user_id.HasValue ?
-                new ObjectParameter("user_id", user_id) :
-                new ObjectParameter("user_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_block_user", user_idParameter);
-        }
-    
-        public virtual ObjectResult<sp_get_all_users_Result> sp_get_all_users()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_all_users_Result>("sp_get_all_users");
-        }
-    
-        public virtual int sp_unblock_user(Nullable<int> user_id)
-        {
-            var user_idParameter = user_id.HasValue ?
-                new ObjectParameter("user_id", user_id) :
-                new ObjectParameter("user_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_unblock_user", user_idParameter);
-        }
-    
-        public virtual ObjectResult<sp_get_active_users_Result> sp_get_active_users()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_active_users_Result>("sp_get_active_users");
-        }
-    
-        public virtual ObjectResult<sp_get_blocked_users_Result> sp_get_blocked_users()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_blocked_users_Result>("sp_get_blocked_users");
         }
     }
 }

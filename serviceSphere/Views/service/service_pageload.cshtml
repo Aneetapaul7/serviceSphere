@@ -4,87 +4,193 @@
     Layout = "~/Views/Shared/_ProviderLayout.cshtml";
 }
 
-<h2>Add service</h2>
+<style>
 
-@using (Html.BeginForm("service_click",
-                        "service",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
-{
-    <div class="form-group">
 
-        <label>Category</label>
+    .service-card {
+        max-width: 650px;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+        box-sizing: border-box;
+    }
 
-        @Html.DropDownListFor(m => m.category_id,
-        (IEnumerable<SelectListItem>)ViewBag.category,
-        "--Select Category--",
-        new { @class = "form-control" })
+    .form-group {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 0;
+    }
 
-    </div>
+    .form-control {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
 
-    <div class="form-group">
 
-        <label>Service Name</label>
+    .service-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: bold;
+        color: #333;
+    }
 
-        @Html.TextBoxFor(m => m.service_name,
-        new { @class = "form-control" })
+    
 
-        @Html.ValidationMessageFor(m => m.service_name)
+    label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
 
-    </div>
+   
+    textarea.form-control {
+        height: auto;
+    }
 
-    <div class="form-group">
+    select.form-control {
+        white-space: normal;
+    }
 
-        <label>Description</label>
+    .btn-div {
+        text-align: center;
+        margin-top: 25px;
+    }
 
-        @Html.TextAreaFor(m => m.service_description,
-        new { @class = "form-control" })
+    .btn-create {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
 
-        @Html.ValidationMessageFor(m => m.service_description)
-
-    </div>
-
-    <div class="form-group">
-
-        <label>Price</label>
-
-        @Html.TextBoxFor(m => m.service_price,
-        new { @class = "form-control" })
-
-        @Html.ValidationMessageFor(m => m.service_price)
-
-    </div>
-    <div class="form-group">
-
-        <label>Locations Available</label>
-
-        @Html.TextBoxFor(m => m.location,
-        new { @class = "form-control", placeholder = "Enter location" })
-
-    </div>
-
-    <div class="form-group">
-
-        <label>Service Image</label>
-
-        <input type="file" name="file" class="form-control" />
-
-        @Html.ValidationMessageFor(m => m.file)
-
-    </div>
-
-    <br />
-
-    <div>
-        <input type="submit" value="create" />
-
-        @if (Model != null && Model.msg != null)
-        {
-            <div class="text-success">
-                @Model.msg
-            </div>
+        .btn-create:hover {
+            background-color: #0056b3;
         }
-    </div>
-}
 
-<br />
+    .text-success {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .validation-error {
+        color: red;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+</style>
+
+<div class="service-card">
+
+    <h2 class="service-title">Add Service</h2>
+
+    @using (Html.BeginForm("service_click",
+                            "service",
+                            FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="form-group">
+
+            <label>Category</label>
+
+            @Html.DropDownListFor(
+                m => m.category_id,
+                (IEnumerable<SelectListItem>)ViewBag.category,
+                "--Select Category--",
+                new { @class = "form-control", style = "width:100%;" }
+            )
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Service Name</label>
+
+            @Html.TextBoxFor(
+                m => m.service_name,
+                new { @class = "form-control" }
+            )
+
+            <div class="validation-error">
+                @Html.ValidationMessageFor(m => m.service_name)
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Description</label>
+
+            @Html.TextAreaFor(
+                m => m.service_description,
+                new { @class = "form-control", rows = "4" }
+            )
+
+            <div class="validation-error">
+                @Html.ValidationMessageFor(m => m.service_description)
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Price</label>
+
+            @Html.TextBoxFor(
+                m => m.service_price,
+                new { @class = "form-control" }
+            )
+
+            <div class="validation-error">
+                @Html.ValidationMessageFor(m => m.service_price)
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Locations Available</label>
+
+            @Html.TextBoxFor(
+                m => m.location,
+                new { @class = "form-control", placeholder = "Enter location" }
+            )
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Service Image</label>
+
+            <input type="file" name="file" class="form-control" />
+
+            <div class="validation-error">
+                @Html.ValidationMessageFor(m => m.file)
+            </div>
+
+        </div>
+
+        <br />
+
+        <div>
+
+            <input type="submit"
+                   value="Create Service"
+                   class="btn-create" />
+
+            @if (Model != null && Model.msg != null)
+            {
+                <div class="text-success">
+                    @Model.msg
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
