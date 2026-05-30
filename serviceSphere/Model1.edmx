@@ -65,10 +65,10 @@
           <Property Name="review_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="booking_id" Type="int" Nullable="false" />
           <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="provider_id" Type="int" Nullable="false" />
           <Property Name="service_id" Type="int" Nullable="false" />
           <Property Name="rating" Type="int" Nullable="false" />
-          <Property Name="review_msg" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="review_message" Type="varchar" MaxLength="500" />
+          <Property Name="created_date" Type="datetime" />
         </EntityType>
         <EntityType Name="servicetab">
           <Key>
@@ -98,6 +98,13 @@
         </EntityType>
         <Function Name="sp_accept_booking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="booking_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_add_review" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="booking_id" Type="int" Mode="In" />
+          <Parameter Name="user_id" Type="int" Mode="In" />
+          <Parameter Name="service_id" Type="int" Mode="In" />
+          <Parameter Name="rating" Type="int" Mode="In" />
+          <Parameter Name="review_message" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_adminregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="adminid" Type="int" Mode="In" />
@@ -182,6 +189,9 @@
           <Parameter Name="user_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_provider_bookings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_provider_reviews" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="provider_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_providersregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -297,10 +307,10 @@
           <Property Name="review_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="booking_id" Type="Int32" Nullable="false" />
           <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="provider_id" Type="Int32" Nullable="false" />
           <Property Name="service_id" Type="Int32" Nullable="false" />
           <Property Name="rating" Type="Int32" Nullable="false" />
-          <Property Name="review_msg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="review_message" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="servicetab">
           <Key>
@@ -339,6 +349,13 @@
           <EntitySet Name="usertabs" EntityType="Self.usertab" />
           <FunctionImport Name="sp_accept_booking">
             <Parameter Name="booking_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_add_review">
+            <Parameter Name="booking_id" Mode="In" Type="Int32" />
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
+            <Parameter Name="service_id" Mode="In" Type="Int32" />
+            <Parameter Name="rating" Mode="In" Type="Int32" />
+            <Parameter Name="review_message" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_adminregister">
             <Parameter Name="adminid" Mode="In" Type="Int32" />
@@ -423,6 +440,9 @@
             <Parameter Name="user_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_provider_bookings" ReturnType="Collection(servicesphereModel.sp_provider_bookings_Result)">
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_provider_reviews" ReturnType="Collection(servicesphereModel.sp_provider_reviews_Result)">
             <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_providersregister">
@@ -545,6 +565,7 @@
         </ComplexType>
         <ComplexType Name="sp_my_bookings_Result">
           <Property Type="Int32" Name="booking_id" Nullable="false" />
+          <Property Type="Int32" Name="service_id" Nullable="false" />
           <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="service_date" Nullable="false" />
           <Property Type="String" Name="service_time" Nullable="false" MaxLength="20" />
@@ -561,6 +582,13 @@
           <Property Type="String" Name="address" Nullable="false" MaxLength="500" />
           <Property Type="String" Name="description" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="status" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_provider_reviews_Result">
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="rating" Nullable="false" />
+          <Property Type="String" Name="review_message" Nullable="true" MaxLength="500" />
+          <Property Type="DateTime" Name="created_date" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="sp_view_provider_services_Result">
           <Property Type="Int32" Name="service_id" Nullable="false" />
@@ -644,10 +672,10 @@
                 <ScalarProperty Name="review_id" ColumnName="review_id" />
                 <ScalarProperty Name="booking_id" ColumnName="booking_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
                 <ScalarProperty Name="service_id" ColumnName="service_id" />
                 <ScalarProperty Name="rating" ColumnName="rating" />
-                <ScalarProperty Name="review_msg" ColumnName="review_msg" />
+                <ScalarProperty Name="review_message" ColumnName="review_message" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -680,6 +708,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_accept_booking" FunctionName="servicesphereModel.Store.sp_accept_booking" />
+          <FunctionImportMapping FunctionImportName="sp_add_review" FunctionName="servicesphereModel.Store.sp_add_review" />
           <FunctionImportMapping FunctionImportName="sp_adminregister" FunctionName="servicesphereModel.Store.sp_adminregister" />
           <FunctionImportMapping FunctionImportName="sp_approve_provider" FunctionName="servicesphereModel.Store.sp_approve_provider" />
           <FunctionImportMapping FunctionImportName="sp_block_provider" FunctionName="servicesphereModel.Store.sp_block_provider" />
@@ -815,6 +844,7 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="servicesphereModel.sp_my_bookings_Result">
                 <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
                 <ScalarProperty Name="service_name" ColumnName="service_name" />
                 <ScalarProperty Name="service_date" ColumnName="service_date" />
                 <ScalarProperty Name="service_time" ColumnName="service_time" />
@@ -835,6 +865,17 @@
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_provider_reviews" FunctionName="servicesphereModel.Store.sp_provider_reviews">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_provider_reviews_Result">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="review_message" ColumnName="review_message" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

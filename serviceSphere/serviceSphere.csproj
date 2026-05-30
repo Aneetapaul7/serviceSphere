@@ -143,6 +143,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\loginController.cs" />
     <Compile Include="Controllers\providerregController.cs" />
+    <Compile Include="Controllers\reviewController.cs" />
     <Compile Include="Controllers\serviceController.cs" />
     <Compile Include="Controllers\userregController.cs" />
     <Compile Include="Global.asax.cs">
@@ -170,6 +171,7 @@
     <Compile Include="Models\booking.cs" />
     <Compile Include="Models\category.cs" />
     <Compile Include="Models\login.cs" />
+    <Compile Include="Models\review.cs" />
     <Compile Include="Models\service.cs" />
     <Compile Include="Models\serviceprovider.cs" />
     <Compile Include="Models\userinsert.cs" />
@@ -214,6 +216,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_provider_bookings_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_provider_reviews_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_view_provider_services_Result.cs">
@@ -294,6 +299,8 @@
     <Content Include="Views\booking\BookService.cshtml" />
     <Content Include="Views\booking\MyBookings.cshtml" />
     <Content Include="Views\booking\ProviderBookings.cshtml" />
+    <Content Include="Views\review\AddReview.cshtml" />
+    <Content Include="Views\review\ProviderReviews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

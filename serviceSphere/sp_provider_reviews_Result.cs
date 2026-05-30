@@ -11,15 +11,12 @@ namespace serviceSphere
 {
     using System;
     
-    public partial class sp_my_bookings_Result
+    public partial class sp_provider_reviews_Result
     {
-        public int booking_id { get; set; }
-        public int service_id { get; set; }
+        public int user_id { get; set; }
         public string service_name { get; set; }
-        public System.DateTime service_date { get; set; }
-        public string service_time { get; set; }
-        public string address { get; set; }
-        public string description { get; set; }
-        public string status { get; set; }
+        public int rating { get; set; }
+        public string review_message { get; set; }
+        public Nullable<System.DateTime> created_date { get; set; }
     }
 }

@@ -45,6 +45,31 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_accept_booking", booking_idParameter);
         }
     
+        public virtual int sp_add_review(Nullable<int> booking_id, Nullable<int> user_id, Nullable<int> service_id, Nullable<int> rating, string review_message)
+        {
+            var booking_idParameter = booking_id.HasValue ?
+                new ObjectParameter("booking_id", booking_id) :
+                new ObjectParameter("booking_id", typeof(int));
+    
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            var service_idParameter = service_id.HasValue ?
+                new ObjectParameter("service_id", service_id) :
+                new ObjectParameter("service_id", typeof(int));
+    
+            var ratingParameter = rating.HasValue ?
+                new ObjectParameter("rating", rating) :
+                new ObjectParameter("rating", typeof(int));
+    
+            var review_messageParameter = review_message != null ?
+                new ObjectParameter("review_message", review_message) :
+                new ObjectParameter("review_message", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_add_review", booking_idParameter, user_idParameter, service_idParameter, ratingParameter, review_messageParameter);
+        }
+    
         public virtual int sp_adminregister(Nullable<int> adminid, string adminname, string adminemail, Nullable<long> phone)
         {
             var adminidParameter = adminid.HasValue ?
@@ -338,6 +363,15 @@ namespace serviceSphere
                 new ObjectParameter("provider_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_provider_bookings_Result>("sp_provider_bookings", provider_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_provider_reviews_Result> sp_provider_reviews(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_provider_reviews_Result>("sp_provider_reviews", provider_idParameter);
         }
     
         public virtual int sp_providersregister(Nullable<int> providerregid, string bussinessname, string address, string email, Nullable<long> phone, string isapproved)

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<serviceSphere.sp_provider_reviews_Result>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>User ID</th>
+        <th>Service</th>
+        <th>Rating</th>
+        <th>Review</th>
+        <th>Date</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+
+    <td>@item.user_id</td>
+
+    <td>@item.service_name</td>
+
+    <td>
+        @for (int i = 1; i <= item.rating; i++)
+        {
+            <span style="color:gold;">★</span>
+        }
+    </td>
+
+    <td>@item.review_message</td>
+
+    
+    <td>
+        @(Convert.ToDateTime(item.created_date).ToString("dd-MM-yyyy"))
+    </td>
+    
+
+</tr>
+    }
+
+</table>

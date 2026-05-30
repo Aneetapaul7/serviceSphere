@@ -13,58 +13,89 @@
         <table class="table table-bordered table-hover bg-white shadow-sm">
             <thead class="thead-dark">
                 <tr>
+              
                     <th>Service</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Address</th>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
+              
             </thead>
 
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.service_name</td>
+                <tr>
 
-                        <td>
-                            @(Convert.ToDateTime(item.service_date).ToString("dd-MM-yyyy"))
-                        </td>
+                    <td>@item.service_name</td>
 
-                        <td>@item.service_time</td>
+                    <td>
+                        @(Convert.ToDateTime(item.service_date)
+            .ToString("dd-MM-yyyy"))
+                    </td>
 
-                        <td>@item.address</td>
+                    <td>@item.service_time</td>
 
-                        <td>@item.description</td>
+                    <td>@item.address</td>
 
-                        <td>
-                            @if (item.status == "Pending")
-                            {
-                                <span class="badge badge-warning">
-                                    Pending
-                                </span>
-                            }
-                            else if (item.status == "Accepted")
-                            {
-                                <span class="badge badge-success">
-                                    Accepted
-                                </span>
-                            }
-                            else if (item.status == "Rejected")
-                            {
-                                <span class="badge badge-danger">
-                                    Rejected
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-secondary">
-                                    @item.status
-                                </span>
-                            }
-                        </td>
-                    </tr>
+                    <td>@item.description</td>
+
+                    <td>
+
+                        @if (item.status == "Pending")
+                        {
+                            <span class="badge badge-warning">
+                                Pending
+                            </span>
+                        }
+                        else if (item.status == "Accepted")
+                        {
+                            <span class="badge badge-success">
+                                Accepted
+                            </span>
+                        }
+                        else if (item.status == "Rejected")
+                        {
+                            <span class="badge badge-danger">
+                                Rejected
+                            </span>
+                        }
+                        else if (item.status == "Completed")
+                        {
+                            <span class="badge badge-primary">
+                                Completed
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        @if (item.status == "Completed")
+                        {
+                            <a href="@Url.Action(
+                        "AddReview",
+                        "Review",
+                        new
+                        {
+                            booking_id = item.booking_id,
+                            service_id = item.service_id
+                        })"
+                               class="btn btn-warning btn-sm">
+
+                                Add Review
+
+                            </a>
+                        }
+
+                    </td>
+
+                </tr>
+                       
+                   
                 }
             </tbody>
         </table>
