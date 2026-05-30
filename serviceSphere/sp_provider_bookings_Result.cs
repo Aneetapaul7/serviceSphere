@@ -10,15 +10,16 @@
 namespace serviceSphere
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class bookingtab
+    public partial class sp_provider_bookings_Result
     {
         public int booking_id { get; set; }
         public int user_id { get; set; }
-        public int provider_id { get; set; }
-        public int service_id { get; set; }
-        public System.DateTime booking_date { get; set; }
-        public string booking_status { get; set; }
+        public string service_name { get; set; }
+        public System.DateTime service_date { get; set; }
+        public string service_time { get; set; }
+        public string address { get; set; }
+        public string description { get; set; }
+        public string status { get; set; }
     }
 }

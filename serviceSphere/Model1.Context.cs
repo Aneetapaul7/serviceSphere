@@ -28,13 +28,22 @@ namespace serviceSphere
         }
     
         public virtual DbSet<admintab> admintabs { get; set; }
+        public virtual DbSet<booking> bookings { get; set; }
         public virtual DbSet<categorytab> categorytabs { get; set; }
         public virtual DbSet<logintab> logintabs { get; set; }
         public virtual DbSet<providertab> providertabs { get; set; }
         public virtual DbSet<reviewtab> reviewtabs { get; set; }
         public virtual DbSet<servicetab> servicetabs { get; set; }
         public virtual DbSet<usertab> usertabs { get; set; }
-        public virtual DbSet<bookingtab> bookingtabs { get; set; }
+    
+        public virtual int sp_accept_booking(Nullable<int> booking_id)
+        {
+            var booking_idParameter = booking_id.HasValue ?
+                new ObjectParameter("booking_id", booking_id) :
+                new ObjectParameter("booking_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_accept_booking", booking_idParameter);
+        }
     
         public virtual int sp_adminregister(Nullable<int> adminid, string adminname, string adminemail, Nullable<long> phone)
         {
@@ -84,6 +93,39 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_block_user", user_idParameter);
         }
     
+        public virtual int sp_book_service(Nullable<int> user_id, Nullable<int> service_id, Nullable<int> provider_id, Nullable<System.DateTime> service_date, string service_time, string address, string description)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            var service_idParameter = service_id.HasValue ?
+                new ObjectParameter("service_id", service_id) :
+                new ObjectParameter("service_id", typeof(int));
+    
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            var service_dateParameter = service_date.HasValue ?
+                new ObjectParameter("service_date", service_date) :
+                new ObjectParameter("service_date", typeof(System.DateTime));
+    
+            var service_timeParameter = service_time != null ?
+                new ObjectParameter("service_time", service_time) :
+                new ObjectParameter("service_time", typeof(string));
+    
+            var addressParameter = address != null ?
+                new ObjectParameter("address", address) :
+                new ObjectParameter("address", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("description", description) :
+                new ObjectParameter("description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_book_service", user_idParameter, service_idParameter, provider_idParameter, service_dateParameter, service_timeParameter, addressParameter, descriptionParameter);
+        }
+    
         public virtual int sp_category_delete(Nullable<int> cat_id)
         {
             var cat_idParameter = cat_id.HasValue ?
@@ -114,6 +156,15 @@ namespace serviceSphere
                 new ObjectParameter("provider_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_check_provider_status", provider_idParameter);
+        }
+    
+        public virtual int sp_complete_booking(Nullable<int> booking_id)
+        {
+            var booking_idParameter = booking_id.HasValue ?
+                new ObjectParameter("booking_id", booking_id) :
+                new ObjectParameter("booking_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_complete_booking", booking_idParameter);
         }
     
         public virtual int sp_delete_service(Nullable<int> service_id)
@@ -271,6 +322,24 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_maxidlogin");
         }
     
+        public virtual ObjectResult<sp_my_bookings_Result> sp_my_bookings(Nullable<int> user_id)
+        {
+            var user_idParameter = user_id.HasValue ?
+                new ObjectParameter("user_id", user_id) :
+                new ObjectParameter("user_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_my_bookings_Result>("sp_my_bookings", user_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_provider_bookings_Result> sp_provider_bookings(Nullable<int> provider_id)
+        {
+            var provider_idParameter = provider_id.HasValue ?
+                new ObjectParameter("provider_id", provider_id) :
+                new ObjectParameter("provider_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_provider_bookings_Result>("sp_provider_bookings", provider_idParameter);
+        }
+    
         public virtual int sp_providersregister(Nullable<int> providerregid, string bussinessname, string address, string email, Nullable<long> phone, string isapproved)
         {
             var providerregidParameter = providerregid.HasValue ?
@@ -298,6 +367,15 @@ namespace serviceSphere
                 new ObjectParameter("isapproved", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_providersregister", providerregidParameter, bussinessnameParameter, addressParameter, emailParameter, phoneParameter, isapprovedParameter);
+        }
+    
+        public virtual int sp_reject_booking(Nullable<int> booking_id)
+        {
+            var booking_idParameter = booking_id.HasValue ?
+                new ObjectParameter("booking_id", booking_id) :
+                new ObjectParameter("booking_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_reject_booking", booking_idParameter);
         }
     
         public virtual int sp_unblock_provider(Nullable<int> provider_id)

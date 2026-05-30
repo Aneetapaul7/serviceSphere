@@ -37,5 +37,9 @@ namespace serviceSphere.Controllers
 
             return View("userreg_pageload", clsobj);
         }
+
+
+     
+
     }
 }

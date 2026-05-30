@@ -1,0 +1,79 @@
+﻿@model IEnumerable<serviceSphere.sp_provider_bookings_Result>
+
+@{
+    ViewBag.Title = "Provider Bookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="margin-top:120px;">
+
+    <h2 class="mb-4">Incoming Service Requests</h2>
+
+    @foreach (var item in Model)
+    {
+        <div class="card mb-3 shadow-sm">
+
+            <div class="card-body">
+
+                <h4>@item.service_name</h4>
+
+                <p><strong>Date:</strong> @Convert.ToDateTime(item.service_date).ToString("dd-MM-yyyy")</p>
+
+                <p><strong>Time:</strong> @item.service_time</p>
+
+                <p><strong>Address:</strong> @item.address</p>
+
+                <p><strong>Problem:</strong> @item.description</p>
+
+                <p>
+                    <strong>Status:</strong>
+
+                    @if (item.status == "Pending")
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                    else if (item.status == "Accepted")
+                    {
+                        <span class="badge bg-success">Accepted</span>
+                    }
+                    else if (item.status == "Rejected")
+                    {
+                        <span class="badge bg-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">Completed</span>
+                    }
+                </p>
+
+                <div class="mt-3">
+
+                    @if (item.status == "Pending")
+                    {
+                        <a href="@Url.Action("AcceptBooking","Booking", new { booking_id = item.booking_id })"
+                           class="btn btn-success btn-sm">
+                            Accept
+                        </a>
+
+                        <a href="@Url.Action("RejectBooking","Booking", new { booking_id = item.booking_id })"
+                           class="btn btn-danger btn-sm">
+                            Reject
+                        </a>
+                    }
+
+                    @if (item.status == "Accepted")
+                    {
+                        <a href="@Url.Action("CompleteBooking","Booking", new { booking_id = item.booking_id })"
+                           class="btn btn-primary btn-sm">
+                            Mark Completed
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

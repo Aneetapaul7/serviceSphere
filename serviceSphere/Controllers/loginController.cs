@@ -55,6 +55,7 @@ namespace serviceSphere.Controllers
 
                         else if (status == "approved")
                         {
+                          
                             return RedirectToAction("providerhome");
                         }
                     }

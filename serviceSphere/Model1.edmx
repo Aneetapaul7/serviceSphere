@@ -14,23 +14,20 @@
           <Property Name="admin_email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="admin_phone" Type="bigint" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="bookingtab">
+        <EntityType Name="booking">
           <Key>
             <PropertyRef Name="booking_id" />
-            <PropertyRef Name="user_id" />
-            <PropertyRef Name="provider_id" />
-            <PropertyRef Name="service_id" />
-            <PropertyRef Name="booking_date" />
-            <PropertyRef Name="booking_status" />
           </Key>
-          <Property Name="booking_id" Type="int" Nullable="false" />
+          <Property Name="booking_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="provider_id" Type="int" Nullable="false" />
           <Property Name="service_id" Type="int" Nullable="false" />
-          <Property Name="booking_date" Type="date" Nullable="false" />
-          <Property Name="booking_status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="provider_id" Type="int" Nullable="false" />
+          <Property Name="booking_date" Type="datetime" />
+          <Property Name="service_date" Type="date" Nullable="false" />
+          <Property Name="service_time" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="500" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="categorytab">
           <Key>
@@ -99,6 +96,9 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Function Name="sp_accept_booking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="booking_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_adminregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="adminid" Type="int" Mode="In" />
           <Parameter Name="adminname" Type="varchar" Mode="In" />
@@ -114,6 +114,15 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
         <Function Name="sp_block_user" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="user_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_book_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_id" Type="int" Mode="In" />
+          <Parameter Name="service_id" Type="int" Mode="In" />
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+          <Parameter Name="service_date" Type="date" Mode="In" />
+          <Parameter Name="service_time" Type="varchar" Mode="In" />
+          <Parameter Name="address" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_category_delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="cat_id" Type="int" Mode="In" />
         </Function>
@@ -123,6 +132,9 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
         <Function Name="sp_category_select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_check_provider_status" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_complete_booking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="booking_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_delete_service" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="service_id" Type="int" Mode="In" />
@@ -166,6 +178,12 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <Parameter Name="password" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_maxidlogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_my_bookings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_provider_bookings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="provider_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_providersregister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerregid" Type="int" Mode="In" />
           <Parameter Name="bussinessname" Type="varchar" Mode="In" />
@@ -173,6 +191,9 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <Parameter Name="email" Type="varchar" Mode="In" />
           <Parameter Name="phone" Type="bigint" Mode="In" />
           <Parameter Name="isapproved" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_reject_booking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="booking_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_unblock_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="provider_id" Type="int" Mode="In" />
@@ -203,22 +224,13 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
         </Function>
         <EntityContainer Name="servicesphereModelStoreContainer">
           <EntitySet Name="admintab" EntityType="Self.admintab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="booking" EntityType="Self.booking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="categorytab" EntityType="Self.categorytab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="logintab" EntityType="Self.logintab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="providertab" EntityType="Self.providertab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="reviewtab" EntityType="Self.reviewtab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="servicetab" EntityType="Self.servicetab" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertab" EntityType="Self.usertab" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="bookingtab" EntityType="Self.bookingtab" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [bookingtab].[booking_id] AS [booking_id], 
-    [bookingtab].[user_id] AS [user_id], 
-    [bookingtab].[provider_id] AS [provider_id], 
-    [bookingtab].[service_id] AS [service_id], 
-    [bookingtab].[booking_date] AS [booking_date], 
-    [bookingtab].[booking_status] AS [booking_status]
-    FROM [dbo].[bookingtab] AS [bookingtab]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -233,6 +245,21 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <Property Name="admin_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="admin_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="admin_phone" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="booking_id" />
+          </Key>
+          <Property Name="booking_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="service_id" Type="Int32" Nullable="false" />
+          <Property Name="provider_id" Type="Int32" Nullable="false" />
+          <Property Name="booking_date" Type="DateTime" Precision="3" />
+          <Property Name="service_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="service_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="categorytab">
           <Key>
@@ -301,31 +328,18 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
-        <EntityType Name="bookingtab">
-          <Key>
-            <PropertyRef Name="booking_id" />
-            <PropertyRef Name="user_id" />
-            <PropertyRef Name="provider_id" />
-            <PropertyRef Name="service_id" />
-            <PropertyRef Name="booking_date" />
-            <PropertyRef Name="booking_status" />
-          </Key>
-          <Property Name="booking_id" Type="Int32" Nullable="false" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="provider_id" Type="Int32" Nullable="false" />
-          <Property Name="service_id" Type="Int32" Nullable="false" />
-          <Property Name="booking_date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="booking_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="servicesphereEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="admintabs" EntityType="Self.admintab" />
+          <EntitySet Name="bookings" EntityType="Self.booking" />
           <EntitySet Name="categorytabs" EntityType="Self.categorytab" />
           <EntitySet Name="logintabs" EntityType="Self.logintab" />
           <EntitySet Name="providertabs" EntityType="Self.providertab" />
           <EntitySet Name="reviewtabs" EntityType="Self.reviewtab" />
           <EntitySet Name="servicetabs" EntityType="Self.servicetab" />
           <EntitySet Name="usertabs" EntityType="Self.usertab" />
-          <EntitySet Name="bookingtabs" EntityType="Self.bookingtab" />
+          <FunctionImport Name="sp_accept_booking">
+            <Parameter Name="booking_id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_adminregister">
             <Parameter Name="adminid" Mode="In" Type="Int32" />
             <Parameter Name="adminname" Mode="In" Type="String" />
@@ -341,6 +355,15 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <FunctionImport Name="sp_block_user">
             <Parameter Name="user_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_book_service">
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
+            <Parameter Name="service_id" Mode="In" Type="Int32" />
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
+            <Parameter Name="service_date" Mode="In" Type="DateTime" />
+            <Parameter Name="service_time" Mode="In" Type="String" />
+            <Parameter Name="address" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="sp_category_delete">
             <Parameter Name="cat_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -350,6 +373,9 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <FunctionImport Name="sp_category_select" ReturnType="Collection(servicesphereModel.sp_category_select_Result)" />
           <FunctionImport Name="sp_check_provider_status" ReturnType="Collection(String)">
             <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_complete_booking">
+            <Parameter Name="booking_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_delete_service">
             <Parameter Name="service_id" Mode="In" Type="Int32" />
@@ -393,6 +419,12 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
             <Parameter Name="password" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_maxidlogin" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="sp_my_bookings" ReturnType="Collection(servicesphereModel.sp_my_bookings_Result)">
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_provider_bookings" ReturnType="Collection(servicesphereModel.sp_provider_bookings_Result)">
+            <Parameter Name="provider_id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_providersregister">
             <Parameter Name="providerregid" Mode="In" Type="Int32" />
             <Parameter Name="bussinessname" Mode="In" Type="String" />
@@ -400,6 +432,9 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
             <Parameter Name="email" Mode="In" Type="String" />
             <Parameter Name="phone" Mode="In" Type="Int64" />
             <Parameter Name="isapproved" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_reject_booking">
+            <Parameter Name="booking_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_unblock_provider">
             <Parameter Name="provider_id" Mode="In" Type="Int32" />
@@ -508,6 +543,25 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
         </ComplexType>
+        <ComplexType Name="sp_my_bookings_Result">
+          <Property Type="Int32" Name="booking_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="service_date" Nullable="false" />
+          <Property Type="String" Name="service_time" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="status" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_provider_bookings_Result">
+          <Property Type="Int32" Name="booking_id" Nullable="false" />
+          <Property Type="Int32" Name="user_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="service_date" Nullable="false" />
+          <Property Type="String" Name="service_time" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="address" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="status" Nullable="true" MaxLength="20" />
+        </ComplexType>
         <ComplexType Name="sp_view_provider_services_Result">
           <Property Type="Int32" Name="service_id" Nullable="false" />
           <Property Type="Int32" Name="provider_regid" Nullable="false" />
@@ -533,6 +587,22 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
                 <ScalarProperty Name="admin_name" ColumnName="admin_name" />
                 <ScalarProperty Name="admin_email" ColumnName="admin_email" />
                 <ScalarProperty Name="admin_phone" ColumnName="admin_phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bookings">
+            <EntityTypeMapping TypeName="servicesphereModel.booking">
+              <MappingFragment StoreEntitySet="booking">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
+                <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+                <ScalarProperty Name="service_date" ColumnName="service_date" />
+                <ScalarProperty Name="service_time" ColumnName="service_time" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="status" ColumnName="status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -609,22 +679,12 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="bookingtabs">
-            <EntityTypeMapping TypeName="servicesphereModel.bookingtab">
-              <MappingFragment StoreEntitySet="bookingtab">
-                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="provider_id" ColumnName="provider_id" />
-                <ScalarProperty Name="service_id" ColumnName="service_id" />
-                <ScalarProperty Name="booking_date" ColumnName="booking_date" />
-                <ScalarProperty Name="booking_status" ColumnName="booking_status" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_accept_booking" FunctionName="servicesphereModel.Store.sp_accept_booking" />
           <FunctionImportMapping FunctionImportName="sp_adminregister" FunctionName="servicesphereModel.Store.sp_adminregister" />
           <FunctionImportMapping FunctionImportName="sp_approve_provider" FunctionName="servicesphereModel.Store.sp_approve_provider" />
           <FunctionImportMapping FunctionImportName="sp_block_provider" FunctionName="servicesphereModel.Store.sp_block_provider" />
           <FunctionImportMapping FunctionImportName="sp_block_user" FunctionName="servicesphereModel.Store.sp_block_user" />
+          <FunctionImportMapping FunctionImportName="sp_book_service" FunctionName="servicesphereModel.Store.sp_book_service" />
           <FunctionImportMapping FunctionImportName="sp_category_delete" FunctionName="servicesphereModel.Store.sp_category_delete" />
           <FunctionImportMapping FunctionImportName="sp_category_insert" FunctionName="servicesphereModel.Store.sp_category_insert" />
           <FunctionImportMapping FunctionImportName="sp_category_select" FunctionName="servicesphereModel.Store.sp_category_select">
@@ -636,6 +696,7 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_check_provider_status" FunctionName="servicesphereModel.Store.sp_check_provider_status" />
+          <FunctionImportMapping FunctionImportName="sp_complete_booking" FunctionName="servicesphereModel.Store.sp_complete_booking" />
           <FunctionImportMapping FunctionImportName="sp_delete_service" FunctionName="servicesphereModel.Store.sp_delete_service" />
           <FunctionImportMapping FunctionImportName="sp_get_active_users" FunctionName="servicesphereModel.Store.sp_get_active_users">
             <ResultMapping>
@@ -750,7 +811,35 @@ warning 6002: The table/view 'servicesphere.dbo.bookingtab' does not have a prim
           <FunctionImportMapping FunctionImportName="sp_logininsert" FunctionName="servicesphereModel.Store.sp_logininsert" />
           <FunctionImportMapping FunctionImportName="sp_logintype" FunctionName="servicesphereModel.Store.sp_logintype" />
           <FunctionImportMapping FunctionImportName="sp_maxidlogin" FunctionName="servicesphereModel.Store.sp_maxidlogin" />
+          <FunctionImportMapping FunctionImportName="sp_my_bookings" FunctionName="servicesphereModel.Store.sp_my_bookings">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_my_bookings_Result">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_date" ColumnName="service_date" />
+                <ScalarProperty Name="service_time" ColumnName="service_time" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_provider_bookings" FunctionName="servicesphereModel.Store.sp_provider_bookings">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_provider_bookings_Result">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_date" ColumnName="service_date" />
+                <ScalarProperty Name="service_time" ColumnName="service_time" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_providersregister" FunctionName="servicesphereModel.Store.sp_providersregister" />
+          <FunctionImportMapping FunctionImportName="sp_reject_booking" FunctionName="servicesphereModel.Store.sp_reject_booking" />
           <FunctionImportMapping FunctionImportName="sp_unblock_provider" FunctionName="servicesphereModel.Store.sp_unblock_provider" />
           <FunctionImportMapping FunctionImportName="sp_unblock_user" FunctionName="servicesphereModel.Store.sp_unblock_user" />
           <FunctionImportMapping FunctionImportName="sp_update_service" FunctionName="servicesphereModel.Store.sp_update_service" />

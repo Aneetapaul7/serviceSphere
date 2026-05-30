@@ -47,7 +47,7 @@
                             📍 @item.location
                         </p>
 
-                        <a href="#"
+                        <a href="@Url.Action("BookService", "booking", new { service_id = item.service_id, provider_id = item.provider_regid })"
                            class="btn btn-primary btn-sm mt-auto">
                             Book Now
                         </a>

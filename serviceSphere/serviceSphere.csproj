@@ -131,13 +131,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="bookingtab.cs">
+    <Compile Include="booking.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="categorytab.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\adminregController.cs" />
+    <Compile Include="Controllers\bookingController.cs" />
     <Compile Include="Controllers\categoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\loginController.cs" />
@@ -166,6 +167,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\admininsert.cs" />
+    <Compile Include="Models\booking.cs" />
     <Compile Include="Models\category.cs" />
     <Compile Include="Models\login.cs" />
     <Compile Include="Models\service.cs" />
@@ -206,6 +208,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_get_service_by_id_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_my_bookings_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_provider_bookings_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_view_provider_services_Result.cs">
@@ -283,6 +291,9 @@
     <Content Include="Views\service\edit_service.cshtml" />
     <Content Include="Views\adminreg\viewproviders.cshtml" />
     <Content Include="Views\adminreg\manage_users.cshtml" />
+    <Content Include="Views\booking\BookService.cshtml" />
+    <Content Include="Views\booking\MyBookings.cshtml" />
+    <Content Include="Views\booking\ProviderBookings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
