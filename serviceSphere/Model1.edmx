@@ -205,6 +205,12 @@
         <Function Name="sp_reject_booking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="booking_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_search_services" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="service_name" Type="varchar" Mode="In" />
+          <Parameter Name="provider_name" Type="varchar" Mode="In" />
+          <Parameter Name="location" Type="varchar" Mode="In" />
+          <Parameter Name="category" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_unblock_provider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="provider_id" Type="int" Mode="In" />
         </Function>
@@ -456,6 +462,12 @@
           <FunctionImport Name="sp_reject_booking">
             <Parameter Name="booking_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_search_services" ReturnType="Collection(servicesphereModel.sp_search_services_Result)">
+            <Parameter Name="service_name" Mode="In" Type="String" />
+            <Parameter Name="provider_name" Mode="In" Type="String" />
+            <Parameter Name="location" Mode="In" Type="String" />
+            <Parameter Name="category" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="sp_unblock_provider">
             <Parameter Name="provider_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -589,6 +601,18 @@
           <Property Type="Int32" Name="rating" Nullable="false" />
           <Property Type="String" Name="review_message" Nullable="true" MaxLength="500" />
           <Property Type="DateTime" Name="created_date" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="sp_search_services_Result">
+          <Property Type="Int32" Name="service_id" Nullable="false" />
+          <Property Type="String" Name="service_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="service_description" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="service_price" Nullable="false" />
+          <Property Type="String" Name="service_image" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="location" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="provider_regid" Nullable="false" />
+          <Property Type="Decimal" Name="rating" Nullable="true" Precision="2" Scale="1" />
+          <Property Type="String" Name="catname" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="bussiness_name" Nullable="false" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="sp_view_provider_services_Result">
           <Property Type="Int32" Name="service_id" Nullable="false" />
@@ -881,6 +905,22 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_providersregister" FunctionName="servicesphereModel.Store.sp_providersregister" />
           <FunctionImportMapping FunctionImportName="sp_reject_booking" FunctionName="servicesphereModel.Store.sp_reject_booking" />
+          <FunctionImportMapping FunctionImportName="sp_search_services" FunctionName="servicesphereModel.Store.sp_search_services">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="servicesphereModel.sp_search_services_Result">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_description" ColumnName="service_description" />
+                <ScalarProperty Name="service_price" ColumnName="service_price" />
+                <ScalarProperty Name="service_image" ColumnName="service_image" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="provider_regid" ColumnName="provider_regid" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="catname" ColumnName="catname" />
+                <ScalarProperty Name="bussiness_name" ColumnName="bussiness_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_unblock_provider" FunctionName="servicesphereModel.Store.sp_unblock_provider" />
           <FunctionImportMapping FunctionImportName="sp_unblock_user" FunctionName="servicesphereModel.Store.sp_unblock_user" />
           <FunctionImportMapping FunctionImportName="sp_update_service" FunctionName="servicesphereModel.Store.sp_update_service" />

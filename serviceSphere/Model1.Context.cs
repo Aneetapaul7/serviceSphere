@@ -412,6 +412,27 @@ namespace serviceSphere
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_reject_booking", booking_idParameter);
         }
     
+        public virtual ObjectResult<sp_search_services_Result> sp_search_services(string service_name, string provider_name, string location, string category)
+        {
+            var service_nameParameter = service_name != null ?
+                new ObjectParameter("service_name", service_name) :
+                new ObjectParameter("service_name", typeof(string));
+    
+            var provider_nameParameter = provider_name != null ?
+                new ObjectParameter("provider_name", provider_name) :
+                new ObjectParameter("provider_name", typeof(string));
+    
+            var locationParameter = location != null ?
+                new ObjectParameter("location", location) :
+                new ObjectParameter("location", typeof(string));
+    
+            var categoryParameter = category != null ?
+                new ObjectParameter("category", category) :
+                new ObjectParameter("category", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_search_services_Result>("sp_search_services", service_nameParameter, provider_nameParameter, locationParameter, categoryParameter);
+        }
+    
         public virtual int sp_unblock_provider(Nullable<int> provider_id)
         {
             var provider_idParameter = provider_id.HasValue ?

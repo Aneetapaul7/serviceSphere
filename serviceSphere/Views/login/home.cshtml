@@ -1,11 +1,87 @@
 ﻿@model IEnumerable<serviceSphere.sp_get_all_services_Result>
-
 @{
     ViewBag.Title = "home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (ViewBag.msg != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.msg
+    </div>
+}
+
+@using (Html.BeginForm("search_service", "login", FormMethod.Post))
+{
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <input type="text"
+               name="service_name"
+               class="form-control"
+               placeholder="Service Name"
+               value="@ViewBag.service_name" />
+    </div>
+
+    <div class="col-md-3">
+        <input type="text"
+               name="provider_name"
+               class="form-control"
+               placeholder="Provider Name"
+               value="@ViewBag.provider_name" />
+    </div>
+
+    <div class="col-md-2">
+        <input type="text"
+               name="location"
+               class="form-control"
+               placeholder="Location"
+               value="@ViewBag.location" />
+    </div>
+
+    <div class="col-md-2">
+        <select name="category" class="form-control">
+
+            <option value="">All Categories</option>
+
+            @foreach (var c in ViewBag.categories)
+            {
+                if (ViewBag.category == c.catname)
+                {
+<option value="@c.catname" selected="selected">
+    @c.catname
+</option> }
+                    else
+                    {
+<option value="@c.catname">
+    @c.catname
+</option>                    }
+                }
+
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <input type="submit"
+               value="Search"
+               class="btn btn-primary w-100" />
+    </div>
+
+</div>}
+
+
+
+
+
+
+
+
 
 <div style="margin-top:120px; padding-left:20px; padding-right:20px;">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No services found.
+        </div>}
 
     <div class="row g-4" style="margin-left:0; margin-right:0;">
 
@@ -26,7 +102,7 @@
                             @item.service_name
                         </h5>
                         <p style="font-size:14px; color:#555; margin-bottom:8px;">
-                             <b>@item.bussiness_name</b>
+                            <b>@item.bussiness_name</b>
                         </p>
 
                         <p style="font-size:14px; height:45px; overflow:hidden; margin-bottom:10px;">
