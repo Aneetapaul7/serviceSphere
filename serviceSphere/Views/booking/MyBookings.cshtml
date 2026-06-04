@@ -5,100 +5,183 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container" style="margin-top:120px;">
+<style>
+    .booking-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
 
-    <h2 class="mb-4">My Bookings</h2>
+    .booking-header {
+        background: #000;
+        color: #fff;
+        padding: 15px 20px;
+    }
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover bg-white shadow-sm">
-            <thead class="thead-dark">
-                <tr>
-              
-                    <th>Service</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Address</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-              
-            </thead>
+    .booking-body {
+        padding: 20px;
+    }
 
-            <tbody>
-                @foreach (var item in Model)
-                {
-                <tr>
+    .booking-info {
+        margin-bottom: 10px;
+    }
 
-                    <td>@item.service_name</td>
+    .status-badge {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
 
-                    <td>
-                        @(Convert.ToDateTime(item.service_date)
-            .ToString("dd-MM-yyyy"))
-                    </td>
+    .pending {
+        background: #ffc107;
+        color: #000;
+    }
 
-                    <td>@item.service_time</td>
+    .accepted {
+        background: #28a745;
+        color: white;
+    }
 
-                    <td>@item.address</td>
+    .rejected {
+        background: #dc3545;
+        color: white;
+    }
 
-                    <td>@item.description</td>
+    .completed {
+        background: #007bff;
+        color: white;
+    }
 
-                    <td>
+    .review-btn {
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container" style="margin-top:120px; margin-bottom:50px;">
+
+    <h2 class="page-title">
+        My Bookings
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No bookings found.
+        </div>
+    }
+
+    @foreach (var item in Model)
+    {
+        <div class="booking-card">
+
+            <div class="booking-header">
+                <h4 style="margin:0;">
+                    @item.service_name
+                </h4>
+            </div>
+
+            <div class="booking-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="booking-info">
+                            <strong>Date :</strong>
+                            @Convert.ToDateTime(item.service_date).ToString("dd-MM-yyyy")
+                        </div>
+
+                        <div class="booking-info">
+                            <strong>Time :</strong>
+                            @item.service_time
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 text-right">
 
                         @if (item.status == "Pending")
                         {
-                            <span class="badge badge-warning">
+                            <span class="status-badge pending">
                                 Pending
                             </span>
                         }
                         else if (item.status == "Accepted")
                         {
-                            <span class="badge badge-success">
+                            <span class="status-badge accepted">
                                 Accepted
                             </span>
                         }
                         else if (item.status == "Rejected")
                         {
-                            <span class="badge badge-danger">
+                            <span class="status-badge rejected">
                                 Rejected
                             </span>
                         }
                         else if (item.status == "Completed")
                         {
-                            <span class="badge badge-primary">
+                            <span class="status-badge completed">
                                 Completed
                             </span>
                         }
 
-                    </td>
+                    </div>
 
-                    <td>
+                </div>
 
-                        @if (item.status == "Completed")
-                        {
-                            <a href="@Url.Action(
-                        "AddReview",
-                        "Review",
-                        new
-                        {
-                            booking_id = item.booking_id,
-                            service_id = item.service_id
-                        })"
-                               class="btn btn-warning btn-sm">
+                <hr />
 
-                                Add Review
 
-                            </a>
-                        }
 
-                    </td>
+                <div class="booking-info">
+                    <strong>Address :</strong> @item.address
+                </div>
 
-                </tr>
-                       
-                   
+                <div class="booking-info">
+                    <strong>Description :</strong> @item.description
+                </div>
+
+
+
+
+
+
+                @if (item.status == "Completed")
+                {
+                    <hr />
+
+                    <div class="text-center">
+
+                        <a href="@Url.Action(
+                            "AddReview",
+                            "Review",
+                            new
+                            {
+                                booking_id = item.booking_id,
+                                service_id = item.service_id
+                            })"
+                           class="btn btn-warning review-btn">
+
+                            ⭐ Add Review
+
+                        </a>
+
+                    </div>
                 }
-            </tbody>
-        </table>
-    </div>
+
+            </div>
+
+        </div>
+    }
 
 </div>

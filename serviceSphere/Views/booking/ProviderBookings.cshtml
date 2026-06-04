@@ -5,67 +5,182 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container" style="margin-top:120px;">
+<style>
+    .booking-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        margin-bottom: 25px;
+        transition: 0.3s;
+    }
 
-    <h2 class="mb-4">Incoming Service Requests</h2>
+        .booking-card:hover {
+            transform: translateY(-3px);
+        }
+
+    .booking-header {
+        background: #000;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .booking-body {
+        padding: 20px;
+    }
+
+    .info-row {
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    .status-badge {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .pending {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .accepted {
+        background: #28a745;
+        color: white;
+    }
+
+    .rejected {
+        background: #dc3545;
+        color: white;
+    }
+
+    .completed {
+        background: #007bff;
+        color: white;
+    }
+
+    .action-btn {
+        min-width: 120px;
+        margin-right: 10px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .page-title {
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+</style>
+
+<div class="container" style="margin-top:120px; margin-bottom:50px;">
+
+    <h2 class="page-title">
+        Incoming Service Requests
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No service requests available.
+        </div>
+    }
 
     @foreach (var item in Model)
     {
-        <div class="card mb-3 shadow-sm">
+        <div class="booking-card">
 
-            <div class="card-body">
+            <div class="booking-header">
+                <h4 style="margin:0;">
+                    @item.service_name
+                </h4>
+            </div>
 
-                <h4>@item.service_name</h4>
+            <div class="booking-body">
 
-                <p><strong>Date:</strong> @Convert.ToDateTime(item.service_date).ToString("dd-MM-yyyy")</p>
+                <div class="row">
 
-                <p><strong>Time:</strong> @item.service_time</p>
+                    <div class="col-md-6">
 
-                <p><strong>Address:</strong> @item.address</p>
+                        <div class="info-row">
+                            <strong>Date :</strong>
+                            @Convert.ToDateTime(item.service_date).ToString("dd-MM-yyyy")
+                        </div>
 
-                <p><strong>Problem:</strong> @item.description</p>
+                        <div class="info-row">
+                            <strong>Time :</strong>
+                            @item.service_time
+                        </div>
 
-                <p>
-                    <strong>Status:</strong>
+                    </div>
 
-                    @if (item.status == "Pending")
-                    {
-                        <span class="badge bg-warning text-dark">Pending</span>
-                    }
-                    else if (item.status == "Accepted")
-                    {
-                        <span class="badge bg-success">Accepted</span>
-                    }
-                    else if (item.status == "Rejected")
-                    {
-                        <span class="badge bg-danger">Rejected</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-primary">Completed</span>
-                    }
-                </p>
+                    <div class="col-md-6 text-md-right">
 
-                <div class="mt-3">
+                        @if (item.status == "Pending")
+                        {
+                            <span class="status-badge pending">
+                                Pending
+                            </span>
+                        }
+                        else if (item.status == "Accepted")
+                        {
+                            <span class="status-badge accepted">
+                                Accepted
+                            </span>
+                        }
+                        else if (item.status == "Rejected")
+                        {
+                            <span class="status-badge rejected">
+                                Rejected
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-badge completed">
+                                Completed
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="info-row">
+                    <strong>Address :</strong><br />
+                    @item.address
+                </div>
+
+                <div class="info-row">
+                    <strong>Problem Description :</strong><br />
+                    @item.description
+                </div>
+
+                <hr />
+
+                <div class="text-center">
 
                     @if (item.status == "Pending")
                     {
                         <a href="@Url.Action("AcceptBooking","Booking", new { booking_id = item.booking_id })"
-                           class="btn btn-success btn-sm">
-                            Accept
+                           class="btn btn-success action-btn">
+                            ✓ Accept
                         </a>
 
                         <a href="@Url.Action("RejectBooking","Booking", new { booking_id = item.booking_id })"
-                           class="btn btn-danger btn-sm">
-                            Reject
+                           class="btn btn-danger action-btn">
+                            ✗ Reject
                         </a>
                     }
 
                     @if (item.status == "Accepted")
                     {
                         <a href="@Url.Action("CompleteBooking","Booking", new { booking_id = item.booking_id })"
-                           class="btn btn-primary btn-sm">
-                            Mark Completed
+                           class="btn btn-primary action-btn">
+                            ✓ Mark Completed
                         </a>
                     }
 

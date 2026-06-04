@@ -1,54 +1,196 @@
-﻿
-@model serviceSphere.booking
+﻿@model serviceSphere.booking
+
 @{
-    ViewBag.Title = "BookService";
+    ViewBag.Title = "Book Service";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>BookService</h2>
+<div class="container" style="margin-top:120px; margin-bottom:50px;">
 
-<div class="container" style="margin-top:120px;">
+    <div class="row justify-content-center">
 
-    <h2>Book Service</h2>
+        <div class="col-md-8 col-md-offset-2">
 
-    <div class="alert alert-info">
-    <strong>Service:</strong> @ViewBag.ServiceName
+            <div class="panel panel-default booking-card">
+
+                <div class="panel-heading booking-header text-center">
+
+                    <h2>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        Service Booking
+                    </h2>
+
+                    <p style="margin-top:10px;">
+                        Complete the details below to confirm your booking
+                    </p>
+
+                </div>
+
+                <div class="panel-body" style="padding:35px;">
+
+                    <div class="alert alert-info text-center">
+                        <strong>Selected Service:</strong>
+                        @ViewBag.ServiceName
+                    </div>
+
+                    @using (Html.BeginForm("BookService", "booking", FormMethod.Post))
+                    {
+                        @Html.HiddenFor(m => m.service_id)
+                        @Html.HiddenFor(m => m.provider_id)
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    <label>
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        Service Date
+                                    </label>
+
+                                    @Html.TextBoxFor(
+                                        m => m.service_date,
+                                        new
+                                        {
+                                            @class = "form-control input-lg",
+                                            type = "date"
+                                        })
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    <label>
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        Service Time
+                                    </label>
+
+                                    @Html.TextBoxFor(
+                                        m => m.service_time,
+                                        new
+                                        {
+                                            @class = "form-control input-lg",
+                                            placeholder = "10:00 AM"
+                                        })
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                <span class="glyphicon glyphicon-map-marker"></span>
+                                Service Address
+                            </label>
+
+                            @Html.TextAreaFor(
+                                m => m.address,
+                                new
+                                {
+                                    @class = "form-control",
+                                    rows = "3",
+                                    placeholder = "Enter complete service address"
+                                })
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                Problem Description
+                            </label>
+
+                            @Html.TextAreaFor(
+                                m => m.description,
+                                new
+                                {
+                                    @class = "form-control",
+                                    rows = "4",
+                                    placeholder = "Describe your service requirement"
+                                })
+
+                        </div>
+
+                        <hr />
+
+                        <div class="text-center">
+
+                            <button type="submit"
+                                    class="btn btn-success btn-lg"
+                                    style="padding:12px 40px;">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                Confirm Booking
+                            </button>
+
+                            <a href="@Url.Action("home","login")"
+                               class="btn btn-default btn-lg"
+                               style="padding:12px 40px; margin-left:10px;">
+                                Cancel
+                            </a>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-   @using (Html.BeginForm("BookService", "booking", FormMethod.Post))
-    {
-        @Html.HiddenFor(m => m.service_id)
-        @Html.HiddenFor(m => m.provider_id)
+<style>
 
-        <div class="form-group">
-            <label>Service Date</label>
-            @Html.TextBoxFor(m => m.service_date,
-                new { @class = "form-control", type = "date" })
-        </div>
-
-        <div class="form-group">
-            <label>Service Time</label>
-            @Html.TextBoxFor(m => m.service_time,
-                new { @class = "form-control", placeholder = "10:00 AM" })
-        </div>
-
-        <div class="form-group">
-            <label>Address</label>
-            @Html.TextAreaFor(m => m.address,
-                new { @class = "form-control", rows = "3" })
-        </div>
-
-        <div class="form-group">
-            <label>Description</label>
-            @Html.TextAreaFor(m => m.description,
-                new { @class = "form-control", rows = "4" })
-        </div>
-
-        <br />
-
-        <input type="submit"
-               value="Confirm Booking"
-               class="btn btn-success" />
+    .booking-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     }
 
-</div>
+    .booking-header {
+        background: #252530 !important;
+        color: #ffffff !important;
+        padding: 30px;
+    }
+
+        .booking-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        height: 45px;
+    }
+
+    textarea.form-control {
+        height: auto;
+    }
+
+    .btn-success {
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .btn-default {
+        border-radius: 8px;
+        font-weight: 600;
+    }
+</style>
