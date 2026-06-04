@@ -12,7 +12,7 @@
 
 @using (Html.BeginForm("search_service", "login", FormMethod.Post))
 {
-<div class="row mb-4">
+<div class="row" style="margin-top:30px;">
 
     <div class="col-md-3">
         <input type="text"
@@ -40,7 +40,6 @@
 
     <div class="col-md-2">
         <select name="category" class="form-control">
-
             <option value="">All Categories</option>
 
             @foreach (var c in ViewBag.categories)
@@ -56,34 +55,28 @@
                     <option value="@c.catname">
                         @c.catname
                     </option>
-           }
+}
             }
-
         </select>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
         <input type="submit"
                value="Search"
                class="btn btn-primary w-100" />
     </div>
 
-
-
-
     @if (Session["uid"] != null)
     {
-<div class="col-md-1">
-    <a href="@Url.Action("MyBookings","booking")"
-       class="btn btn-success w-100">
-        My Bookings
-    </a>
-</div>}
-
+        <div class="col-md-1">
+            <a href="@Url.Action("MyBookings","booking")"
+               class="btn btn-success w-100">
+                My Bookings
+            </a>
+        </div>}
 
 </div>
 }
-
 
 
 
