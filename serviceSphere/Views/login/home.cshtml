@@ -47,15 +47,17 @@
             {
                 if (ViewBag.category == c.catname)
                 {
-<option value="@c.catname" selected="selected">
-    @c.catname
-</option> }
-                    else
-                    {
-<option value="@c.catname">
-    @c.catname
-</option>                    }
-                }
+                    <option value="@c.catname" selected="selected">
+                        @c.catname
+                    </option>
+ }
+                else
+                {
+                    <option value="@c.catname">
+                        @c.catname
+                    </option>
+           }
+            }
 
         </select>
     </div>
@@ -66,7 +68,21 @@
                class="btn btn-primary w-100" />
     </div>
 
+
+
+
+    @if (Session["uid"] != null)
+    {
+<div class="col-md-1">
+    <a href="@Url.Action("MyBookings","booking")"
+       class="btn btn-success w-100">
+        My Bookings
+    </a>
 </div>}
+
+
+</div>
+}
 
 
 

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="445b3ffd5362477db2abf191f4cee820" Name="Diagram1">
+      <Diagram DiagramId="40333ae740fa47029a003309baa060ab" Name="Diagram1">
         <EntityTypeShape EntityType="servicesphereModel.admintab" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="servicesphereModel.booking" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="servicesphereModel.categorytab" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
