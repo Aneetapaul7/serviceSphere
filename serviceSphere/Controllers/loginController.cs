@@ -78,14 +78,15 @@ namespace serviceSphere.Controllers
         {
             ViewBag.categories = dbobj.categorytabs.ToList();
 
-            var services = dbobj.sp_get_all_services().ToList();
+            var services = dbobj.sp_search_services(
+                null,
+                null,
+                null,
+                null
+            ).ToList();
 
             return View(services);
         }
-
-
-
-
 
 
 
@@ -98,56 +99,23 @@ namespace serviceSphere.Controllers
             string category)
         {
             ViewBag.categories = dbobj.categorytabs.ToList();
-
             ViewBag.service_name = service_name;
             ViewBag.provider_name = provider_name;
             ViewBag.location = location;
             ViewBag.category = category;
 
-            var data = dbobj.sp_get_all_services().ToList();
-
-            if (!string.IsNullOrWhiteSpace(service_name))
-            {
-                data = data.Where(x =>
-                    x.service_name != null &&
-                    x.service_name.ToLower().Contains(service_name.ToLower()))
-                    .ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(provider_name))
-            {
-                data = data.Where(x =>
-                    x.bussiness_name != null &&
-                    x.bussiness_name.ToLower().Contains(provider_name.ToLower()))
-                    .ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(location))
-            {
-                data = data.Where(x =>
-                    x.location != null &&
-                    x.location.ToLower().Contains(location.ToLower()))
-                    .ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(category))
-            {
-                data = data.Where(x =>
-                    x.catname != null &&
-                    x.catname == category)
-                    .ToList();
-            }
-
+            var data = dbobj.sp_search_services(
+                service_name,
+                provider_name,
+                location,
+                category
+            ).ToList();
             if (data.Count == 0)
             {
                 ViewBag.msg = "No services found";
             }
-
             return View("home", data);
         }
-
-
-
         public ActionResult adminhome()
         {
             return View();
